@@ -22,6 +22,11 @@ class JokePost
      */
     private $img;
 
+    /**
+     * @var \DateTime
+     */
+    private $date;
+
 
     /**
      * Get id
@@ -79,6 +84,30 @@ class JokePost
     public function getImg()
     {
         return $this->img;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return JokePost
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
     }
 }
 
