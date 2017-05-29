@@ -15,4 +15,6 @@ AppBundle\Entity\JokePost:
         img:
             type: string
             length: 255
+        date:
+            type: datetime
     lifecycleCallbacks: {  }
