@@ -1,5 +1,5 @@
 9Quetzal
 ========
 
-A Symfony project created on May 22, 2017, 11:43 am.
-# 9Quetzal
+docker pull mysql
+docker run --name 9quetzal-mysql -e MYSQL_ROOT_PASSWORD=root -d mysql:latest
