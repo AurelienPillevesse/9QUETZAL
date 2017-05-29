@@ -1,0 +1,18 @@
+AppBundle\Entity\JokePost:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\JokePostRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        title:
+            type: string
+            length: 255
+        img:
+            type: string
+            length: 255
+    lifecycleCallbacks: {  }
