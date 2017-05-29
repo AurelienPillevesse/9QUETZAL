@@ -2,10 +2,12 @@
 
 namespace AppBundle\Entity;
 
+use Symfony\Component\Security\Core\User\UserInterface;
+
 /**
  * User
  */
-class User
+class User implements UserInterface
 {
     /**
      * @var int
@@ -15,12 +17,22 @@ class User
     /**
      * @var string
      */
-    private $login;
+    private $email;
+
+    /**
+     * @var string
+     */
+    private $username;
 
     /**
      * @var string
      */
     private $password;
+
+    /**
+     * @var string
+     */
+    private $plainPassword;
 
 
     /**
@@ -34,27 +46,51 @@ class User
     }
 
     /**
-     * Set login
+     * Set email
      *
-     * @param string $login
+     * @param string $email
      *
      * @return User
      */
-    public function setLogin($login)
+    public function setEmail($email)
     {
-        $this->login = $login;
+        $this->email = $email;
 
         return $this;
     }
 
     /**
-     * Get login
+     * Get email
      *
      * @return string
      */
-    public function getLogin()
+    public function getEmail()
     {
-        return $this->login;
+        return $this->email;
+    }
+
+    /**
+     * Set username
+     *
+     * @param string $username
+     *
+     * @return User
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Get username
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
     }
 
     /**
@@ -80,5 +116,44 @@ class User
     {
         return $this->password;
     }
+
+    /**
+     * Get plainPassword
+     *
+     * @return string
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+
+    /**
+     * Set plainPassword
+     *
+     * @param string $password
+     *
+     */
+    public function setPlainPassword($password)
+    {
+        $this->plainPassword = $password;
+    }
+
+
+    public function getSalt()
+    {
+        // The bcrypt algorithm doesn't require a separate salt.
+        // You *may* need a real salt if you choose a different encoder.
+        return null;
+    }
+
+    public function getRoles(){
+        
+    }
+
+    public function eraseCredentials(){
+        
+    }
+
 }
 

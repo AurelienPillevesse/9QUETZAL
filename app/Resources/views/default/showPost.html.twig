@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div id="wrapper">
+    <div id="container">
+        <div id="welcome">
+            <h1><span>Welcome to</span> ListPost</h1>
+		        <div>
+		        	<h3>{{ joke.title }}</h3>
+		        	<img src="{{ asset('uploads/jokepost/' ~ joke.img) }}">
+		        </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

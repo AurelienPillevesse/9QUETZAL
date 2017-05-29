@@ -9,11 +9,15 @@ AppBundle\Entity\User:
             generator:
                 strategy: AUTO
     fields:
-        login:
+        email:
             type: string
             length: 255
             unique: true
+        username:
+            type: string
+            length: '255'
+            unique: true
         password:
             type: string
-            length: 255
+            length: '64'
     lifecycleCallbacks: {  }

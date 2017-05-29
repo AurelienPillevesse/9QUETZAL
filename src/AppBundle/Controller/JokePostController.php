@@ -62,4 +62,13 @@ class JokePostController extends Controller
             'jokes' => $jokeposts,
             ));
     }
+
+    public function oneAction($id){
+        $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
+        $jokepost = $repository->findOneById($id);
+
+        return $this->render('default/showPost.html.twig', array(
+            'joke' => $jokepost,
+            ));
+    }
 }
