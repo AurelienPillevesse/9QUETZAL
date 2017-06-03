@@ -5,22 +5,19 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use AppBundle\Entity\JokePost;
+use AppBundle\Form\JokePostType;
 
 class JokePostController extends Controller
 {
     public function newAction(Request $request)
     {
-        $jokepost = new JokePost();
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw $this->createAccessDeniedException();
+        }
 
-        $form = $this->createFormBuilder($jokepost)
-        ->add('title', TextType::class)
-        ->add('img', FileType::class, array('label' => 'Image du post'))
-        ->add('save', SubmitType::class, array('label' => 'Create JokePost'))
-        ->getForm();
+        $jokepost = new JokePost();
+        $form = $this->createForm(JokePostType::class, $jokepost);
 
         $form->handleRequest($request);
 

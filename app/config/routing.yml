@@ -3,7 +3,7 @@ homepage:
     defaults: { _controller: AppBundle:Default:index }
 
 jokepost:
-    path:     /jokepost
+    path:     /jokepost/add
     defaults: { _controller: AppBundle:JokePost:new }
 
 jokepost-list:
@@ -13,10 +13,11 @@ jokepost-list:
 jokepost-one:
     path:     /jokepost/{id}
     defaults: { _controller: AppBundle:JokePost:one }
+    requirements:
+        id: '\d+'
 
-user_registration:
-    path:     /register
-    defaults: { _controller: AppBundle:Registration:register }  
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
 user-list:
     path:     /user/list

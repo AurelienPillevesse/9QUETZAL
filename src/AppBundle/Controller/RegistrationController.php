@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 class RegistrationController extends Controller
 {
 
-    public function registerAction(Request $request)
+    /*public function registerAction(Request $request)
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -33,5 +33,5 @@ class RegistrationController extends Controller
             'registration/register.html.twig',
             array('form' => $form->createView())
         );
-    }
+    }*/
 }
