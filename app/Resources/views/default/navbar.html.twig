@@ -7,7 +7,11 @@
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li class="navbar-right">
+      {% if app.user is null %}
         <a href="/login"><span class="glyphicon glyphicon-user"></span>Login</a>
+      {% else %}
+        <a href="/logout"><span class="glyphicon glyphicon-user"></span>Logout ({{app.user}})</a>
+      {% endif %}
       </li>
       <li class="navbar-right">
         <a href="/register">Sign UP</a>
