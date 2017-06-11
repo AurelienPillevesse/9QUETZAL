@@ -2,17 +2,12 @@
 
 namespace AppBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use AppBundle\Entity\User;
 
 class UserController extends Controller
 {
-
     public function listAction(Request $request)
     {
         $repository = $this->getDoctrine()->getRepository('AppBundle:User');
@@ -25,13 +20,13 @@ class UserController extends Controller
 
     /*public function loginAction(Request $request, AuthenticationUtils $authUtils)
     {
-    	$error = $authUtils->getLastAuthenticationError();
-    	$lastUsername = $authUtils->getLastUsername();
+        $error = $authUtils->getLastAuthenticationError();
+        $lastUsername = $authUtils->getLastUsername();
 
-    	return $this->render('security/login.html.twig', array(
-	        'last_username' => $lastUsername,
-	        'error'         => $error,
-	    ));
+        return $this->render('security/login.html.twig', array(
+            'last_username' => $lastUsername,
+            'error'         => $error,
+        ));
 
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -41,13 +36,13 @@ class UserController extends Controller
 
             $password = $this->get('security.password_encoder')
                 ->encodePassword($user, $user->getPlainPassword());
-            
+
             $repository = $this->getDoctrine()->getRepository('AppBundle:User');
-        	$userVerification = $repository->findOneByUsername($user->getUsername());
+            $userVerification = $repository->findOneByUsername($user->getUsername());
 
-        	if($userVerification != null && $userVerification) {
+            if($userVerification != null && $userVerification) {
 
-        	}
+            }
 
             return $this->redirectToRoute('user-list');
         }
