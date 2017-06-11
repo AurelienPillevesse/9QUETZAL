@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 /**
- * JokePost
+ * JokePost.
  */
 class JokePost
 {
@@ -18,6 +18,11 @@ class JokePost
     private $title;
 
     /**
+     * @var int
+     */
+    private $vote;
+
+    /**
      * @var string
      */
     private $img;
@@ -27,9 +32,8 @@ class JokePost
      */
     private $date;
 
-
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -39,7 +43,7 @@ class JokePost
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @param string $title
      *
@@ -53,7 +57,7 @@ class JokePost
     }
 
     /**
-     * Get title
+     * Get title.
      *
      * @return string
      */
@@ -63,7 +67,7 @@ class JokePost
     }
 
     /**
-     * Set img
+     * Set img.
      *
      * @param string $img
      *
@@ -77,7 +81,7 @@ class JokePost
     }
 
     /**
-     * Get img
+     * Get img.
      *
      * @return string
      */
@@ -87,7 +91,7 @@ class JokePost
     }
 
     /**
-     * Set date
+     * Set date.
      *
      * @param \DateTime $date
      *
@@ -101,7 +105,7 @@ class JokePost
     }
 
     /**
-     * Get date
+     * Get date.
      *
      * @return \DateTime
      */
@@ -109,5 +113,28 @@ class JokePost
     {
         return $this->date;
     }
-}
 
+    /**
+     * Set vote.
+     *
+     * @param int $vote
+     *
+     * @return JokePost
+     */
+    public function setVote($vote)
+    {
+        $this->vote = $vote;
+
+        return $this;
+    }
+
+    /**
+     * Get vote.
+     *
+     * @return int
+     */
+    public function getVote()
+    {
+        return $this->vote;
+    }
+}

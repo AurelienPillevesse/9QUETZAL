@@ -12,6 +12,8 @@ AppBundle\Entity\JokePost:
         title:
             type: string
             length: 255
+        vote:
+            type: integer
         img:
             type: string
             length: 255

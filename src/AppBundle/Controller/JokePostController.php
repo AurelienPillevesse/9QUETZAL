@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\JokePost;
 use AppBundle\Form\JokePostType;
@@ -33,7 +34,7 @@ class JokePostController extends Controller
             $imgFile->move(
                 $this->getParameter('jokepost_directory'),
                 $fileName
-                );
+            );
 
             $jokepost->setImg($fileName);
 
@@ -46,7 +47,7 @@ class JokePostController extends Controller
 
         return $this->render('default/createPost.html.twig', array(
             'form' => $form->createView(),
-            ));
+        ));
     }
 
     public function listAction(Request $request)
@@ -56,7 +57,7 @@ class JokePostController extends Controller
 
         return $this->render('default/listPost.html.twig', array(
             'jokes' => $jokeposts,
-            ));
+        ));
     }
 
     public function oneAction($id)
@@ -66,6 +67,26 @@ class JokePostController extends Controller
 
         return $this->render('default/showPost.html.twig', array(
             'joke' => $jokepost,
-            ));
+        ));
+    }
+
+    public function likeAction($id)
+    {
+        $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
+        $jokepost = $repository->findOneById($id);
+        $jokepost->setVote($jokepost->getVote() + 1);
+        $response = new JsonResponse(
+            array('post_id' => $id, 'like' => $jokepost->getVote())
+        );
+    }
+
+    public function unlikeAction($id)
+    {
+        $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
+        $jokepost = $repository->findOneById($id);
+        $jokepost->setVote($jokepost->getVote() - 1);
+        $response = new JsonResponse(
+            array('post_id' => $id, 'like' => $jokepost->getVote())
+        );
     }
 }
