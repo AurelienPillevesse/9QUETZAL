@@ -1,13 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container">
-        <div class="col-md-6 col-md-offset-3">
-            <h1><span>Welcome to</span> ListPost</h1>
-		        <div>
-		        	<h3>{{ joke.title }}</h3>
-		        	<img src="{{ asset('uploads/jokepost/' ~ joke.img) }}">
-		        </div>
+<div class="container">
+    <div class="col-md-6 col-md-offset-3">
+        <h1><span>Welcome to</span> ListPost</h1>
+
+        <div>
+            <h3>{{ joke.title }}</h3>
+            <img src="{{ asset('uploads/jokepost/' ~ joke.img) }}">
+            <div>
+                {{ joke.vote }} likes
+            </div>
+            <a href="{{ path('jokepost-like', {'id': joke.id }) }}">J'aime</a>
+            <a href="{{ path('jokepost-unlike', {'id': joke.id }) }}">J'aime pas</a>
         </div>
+    </div>
 </div>
 {% endblock %}

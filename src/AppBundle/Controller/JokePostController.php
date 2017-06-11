@@ -24,6 +24,7 @@ class JokePostController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $jokepost = $form->getData();
             $jokepost->setDate(new \DateTime('NOW'));
+            $jokepost->setVote(0);
 
             $imgFile = $jokepost->getImg();
 
@@ -70,14 +71,24 @@ class JokePostController extends Controller
         ));
     }
 
-    public function likeAction($id)
+    public function likeAction(Request $request, $id)
     {
         $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
         $jokepost = $repository->findOneById($id);
         $jokepost->setVote($jokepost->getVote() + 1);
-        $response = new JsonResponse(
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($jokepost);
+        $em->flush();
+
+        $this->addFlash('like', 'Congratulations, your liked this post!');
+
+        return $this->redirectToRoute('jokepost-one', array('id' => $id));
+        /*$response = new JsonResponse(
             array('post_id' => $id, 'like' => $jokepost->getVote())
         );
+
+        return $response;*/
     }
 
     public function unlikeAction($id)
@@ -85,8 +96,18 @@ class JokePostController extends Controller
         $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
         $jokepost = $repository->findOneById($id);
         $jokepost->setVote($jokepost->getVote() - 1);
-        $response = new JsonResponse(
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($jokepost);
+        $em->flush();
+
+        $this->addFlash('unlike', 'Congratulations, you unliked this post!');
+
+        return $this->redirectToRoute('jokepost-one', array('id' => $id));
+        /*$response = new JsonResponse(
             array('post_id' => $id, 'like' => $jokepost->getVote())
         );
+
+        return $response;*/
     }
 }

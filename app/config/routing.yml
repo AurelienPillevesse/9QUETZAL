@@ -1,17 +1,29 @@
 homepage:
-    path:     /
+    path:   /
     defaults: { _controller: AppBundle:Default:index }
 
 jokepost:
-    path:     /jokepost/add
+    path:   /jokepost/new
     defaults: { _controller: AppBundle:JokePost:new }
 
 jokepost-list:
-    path:     /jokepost/list
+    path:   /jokepost/list
     defaults: { _controller: AppBundle:JokePost:list }
 
+jokepost-like:
+    path:   /jokepost/like/{id}
+    defaults: { _controller: AppBundle:JokePost:like }
+    requirements:
+        id: '\d+'
+
+jokepost-unlike:
+    path:   /jokepost/unlike/{id}
+    defaults: { _controller: AppBundle:JokePost:unlike }
+    requirements:
+        id: '\d+'
+
 jokepost-one:
-    path:     /jokepost/{id}
+    path:   /jokepost/{id}
     defaults: { _controller: AppBundle:JokePost:one }
     requirements:
         id: '\d+'
@@ -20,5 +32,5 @@ fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
 user-list:
-    path:     /user/list
-    defaults: { _controller: AppBundle:User:list }  
+    path:   /user/list
+    defaults: { _controller: AppBundle:User:list }

@@ -7,8 +7,11 @@
 
             {% for joke in jokes %}
 		        <div class="row	">
-		        	<h3><a href="{{ joke.id }}">{{ joke.title }}</h3>
+		        	<h3><a href="{{ joke.id }}">{{ joke.title }}</a></h3>
 		        	<img src="{{ asset('uploads/jokepost/' ~ joke.img) }}">
+                    <div>
+                        {{ joke.vote }} likes
+                    </div>
 		        </div>
 		    {% endfor %}
         </div>
