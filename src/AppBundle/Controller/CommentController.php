@@ -26,10 +26,10 @@ class CommentController extends Controller
             $jokePostRepository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
             $jokepost = $jokePostRepository->findOneById($idJokePost);
 
-            $jokepost->addComment($comment);
+            $comment->setJokepost($jokepost);
 
             $em = $this->getDoctrine()->getManager();
-            $em->persist($jokepost);
+            $em->persist($comment);
             $em->flush();
 
             return $this->redirectToRoute('jokepost-list');

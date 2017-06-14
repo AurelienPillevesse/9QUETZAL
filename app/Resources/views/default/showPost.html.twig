@@ -13,10 +13,14 @@
             <a href="{{ path('jokepost-like', {'id': joke.id }) }}">J'aime</a>
             <a href="{{ path('jokepost-unlike', {'id': joke.id }) }}">J'aime pas</a>
 
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+
             {% for comment in joke.comments %}
             <div class="row	">
                 <div>
-                    {{ joke.content }}
+                    {{ comment.content }}
                 </div>
             </div>
             {% endfor %}

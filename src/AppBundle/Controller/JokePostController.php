@@ -4,8 +4,10 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\JokePost;
 use AppBundle\Form\JokePostType;
+use AppBundle\Form\CommentType;
+use AppBundle\Entity\JokePost;
+use AppBundle\Entity\Comment;
 
 class JokePostController extends Controller
 {
@@ -60,13 +62,33 @@ class JokePostController extends Controller
         ));
     }
 
-    public function oneAction($id)
+    public function oneAction($id, Request $request)
     {
         $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
         $jokepost = $repository->findOneById($id);
 
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+                throw $this->createAccessDeniedException();
+            }
+
+            $comment = $form->getData();
+            $comment->setJokepost($jokepost);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($comment);
+            $em->flush();
+
+            return $this->redirectToRoute('jokepost-one', array('id' => $id));
+        }
+
         return $this->render('default/showPost.html.twig', array(
             'joke' => $jokepost,
+            'form' => $form->createView(),
         ));
     }
 
