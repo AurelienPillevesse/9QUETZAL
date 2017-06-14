@@ -78,6 +78,7 @@ class JokePostController extends Controller
 
             $comment = $form->getData();
             $comment->setJokepost($jokepost);
+            $comment->setUser($this->getUser());
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);

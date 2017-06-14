@@ -20,7 +20,7 @@
             {% for comment in joke.comments %}
             <div class="row	">
                 <div>
-                    {{ comment.content }}
+                    {{ comment.content }} by {{ comment.user.username }}
                 </div>
             </div>
             {% endfor %}
