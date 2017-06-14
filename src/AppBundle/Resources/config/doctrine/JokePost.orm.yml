@@ -19,4 +19,8 @@ AppBundle\Entity\JokePost:
             length: 255
         date:
             type: datetime
+    oneToMany:
+        comments:
+            targetEntity: Comment
+            mappedBy: jokepost
     lifecycleCallbacks: {  }

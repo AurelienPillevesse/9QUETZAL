@@ -1,19 +1,27 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container">
-        <div class="col-md-6 col-md-offset-3">
-            <h1><span>Welcome to</span> ListPost</h1>
+<div class="container">
+    <div class="col-md-6 col-md-offset-3">
+        <h1><span>Welcome to</span> ListPost</h1>
 
-            {% for joke in jokes %}
-		        <div class="row	">
-		        	<h3><a href="{{ joke.id }}">{{ joke.title }}</a></h3>
-		        	<img src="{{ asset('uploads/jokepost/' ~ joke.img) }}">
-                    <div>
-                        {{ joke.vote }} likes
-                    </div>
-		        </div>
-		    {% endfor %}
+        {% for joke in jokes %}
+        <div class="row	">
+            <h3><a href="{{ joke.id }}">{{ joke.title }}</a></h3>
+            <img src="{{ asset('uploads/jokepost/' ~ joke.img) }}">
+            <div>
+                {{ joke.vote }} likes
+            </div>
+
+            {% for comment in joke.comments %}
+            <div class="row	">
+                <div>
+                    {{ joke.content }}
+                </div>
+            </div>
+            {% endfor %}
         </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

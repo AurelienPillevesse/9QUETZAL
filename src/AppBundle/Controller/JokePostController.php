@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\JokePost;
 use AppBundle\Form\JokePostType;
@@ -84,11 +83,6 @@ class JokePostController extends Controller
         $this->addFlash('like', 'Congratulations, your liked this post!');
 
         return $this->redirectToRoute('jokepost-one', array('id' => $id));
-        /*$response = new JsonResponse(
-            array('post_id' => $id, 'like' => $jokepost->getVote())
-        );
-
-        return $response;*/
     }
 
     public function unlikeAction($id)
@@ -104,10 +98,5 @@ class JokePostController extends Controller
         $this->addFlash('unlike', 'Congratulations, you unliked this post!');
 
         return $this->redirectToRoute('jokepost-one', array('id' => $id));
-        /*$response = new JsonResponse(
-            array('post_id' => $id, 'like' => $jokepost->getVote())
-        );
-
-        return $response;*/
     }
 }

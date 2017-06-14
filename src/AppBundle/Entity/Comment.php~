@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 /**
- * Comment.
+ * Comment
  */
 class Comment
 {
@@ -17,13 +17,9 @@ class Comment
      */
     private $content;
 
-    /**
-     * @var \AppBundle\Entity\JokePost
-     */
-    private $jokepost;
 
     /**
-     * Get id.
+     * Get id
      *
      * @return int
      */
@@ -33,7 +29,7 @@ class Comment
     }
 
     /**
-     * Set content.
+     * Set content
      *
      * @param string $content
      *
@@ -47,7 +43,7 @@ class Comment
     }
 
     /**
-     * Get content.
+     * Get content
      *
      * @return string
      */
@@ -55,28 +51,5 @@ class Comment
     {
         return $this->content;
     }
-
-    /**
-     * Set jokepost.
-     *
-     * @param \AppBundle\Entity\JokePost $jokepost
-     *
-     * @return Comment
-     */
-    public function setJokepost(\AppBundle\Entity\JokePost $jokepost = null)
-    {
-        $this->jokepost = $jokepost;
-
-        return $this;
-    }
-
-    /**
-     * Get jokepost.
-     *
-     * @return \AppBundle\Entity\JokePost
-     */
-    public function getJokepost()
-    {
-        return $this->jokepost;
-    }
 }
+

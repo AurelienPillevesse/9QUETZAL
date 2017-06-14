@@ -11,4 +11,11 @@ AppBundle\Entity\Comment:
     fields:
         content:
             type: text
+    manyToOne:
+        jokepost:
+            targetEntity: JokePost
+            inversedBy: comments
+            joinColumn:
+                name: jokepost_id
+                referencedColumnName: id
     lifecycleCallbacks: {  }

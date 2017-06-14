@@ -33,11 +33,6 @@ class JokePost
     private $date;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $comments;
-
-    /**
      * Get id.
      *
      * @return int
@@ -141,47 +136,5 @@ class JokePost
     public function getVote()
     {
         return $this->vote;
-    }
-
-    /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add comment.
-     *
-     * @param \AppBundle\Entity\Comment $comment
-     *
-     * @return JokePost
-     */
-    public function addComment(\AppBundle\Entity\Comment $comment)
-    {
-        $this->comments[] = $comment;
-
-        return $this;
-    }
-
-    /**
-     * Remove comment.
-     *
-     * @param \AppBundle\Entity\Comment $comment
-     */
-    public function removeComment(\AppBundle\Entity\Comment $comment)
-    {
-        $this->comments->removeElement($comment);
-    }
-
-    /**
-     * Get comments.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getComments()
-    {
-        return $this->comments;
     }
 }

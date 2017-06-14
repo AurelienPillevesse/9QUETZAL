@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 /**
- * Vote
+ * Vote.
  */
 class Vote
 {
@@ -17,9 +17,8 @@ class Vote
      */
     private $choice;
 
-
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -29,9 +28,9 @@ class Vote
     }
 
     /**
-     * Set choice
+     * Set choice.
      *
-     * @param integer $choice
+     * @param int $choice
      *
      * @return Vote
      */
@@ -43,7 +42,7 @@ class Vote
     }
 
     /**
-     * Get choice
+     * Get choice.
      *
      * @return int
      */
@@ -52,4 +51,3 @@ class Vote
         return $this->choice;
     }
 }
-
