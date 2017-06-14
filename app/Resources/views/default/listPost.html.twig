@@ -6,7 +6,7 @@
         <h1><span>Welcome to</span> ListPost</h1>
 
         {% for joke in jokes %}
-        <div class="row	">
+        <div class="row">
             <h3><a href="{{ joke.id }}">{{ joke.title }}</a></h3>
             <img src="{{ asset('uploads/jokepost/' ~ joke.img) }}">
             <div>
@@ -20,6 +20,10 @@
                 </div>
             </div>
             {% endfor %}
+        </div>
+        {% else %}
+        <div class="row">
+            No post submitted yet!
         </div>
         {% endfor %}
     </div>
