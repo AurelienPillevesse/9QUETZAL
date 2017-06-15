@@ -28,9 +28,25 @@ jokepost-one:
     requirements:
         id: '\d+'
 
-fos_user:
-    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+api-jokepost-list:
+    path:   /api/jokepost/list
+    defaults: { _controller: AppBundle:JokePost:listApi }
+
+api-jokepost-like:
+    path:   /api/jokepost/like/{id}
+    defaults: { _controller: AppBundle:JokePost:likeApi }
+    requirements:
+        id: '\d+'
+
+api-jokepost-unlike:
+    path:   /jokepost/unlike/{id}
+    defaults: { _controller: AppBundle:JokePost:unlikeApi }
+    requirements:
+        id: '\d+'
 
 user-list:
     path:   /user/list
     defaults: { _controller: AppBundle:User:list }
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
