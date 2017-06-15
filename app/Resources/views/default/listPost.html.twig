@@ -2,25 +2,28 @@
 
 {% block body %}
 <div class="container">
-    <div class="col-md-6 col-md-offset-3">
+    <div class="row col-md-12">
         <h1><span>Welcome to</span> ListPost</h1>
-
+    </div>
+    <div class=" row col-md-6">
         {% for joke in jokes %}
         <div class="row">
             <h3><a href="{{ joke.id }}">{{ joke.title }}</a></h3>
-            <img src="{{ asset('uploads/jokepost/' ~ joke.img) }}">
-            <div>
-                {{ joke.vote }} likes
-            </div>
+            <img src="{{ asset('uploads/jokepost/' ~ joke.img) }}" style="max-width: 100%;">  
+        </div>
+        <div class="row">
+            {{ joke.vote }} likes
+        </div>
+    </div>
 
+    <div class=" row col-md-6">  
             {% for comment in joke.comments %}
             <div class="row	">
-                <div>
-                    {{ comment.content }} by {{ comment.user.username }}
+                <div class="alert alert-success" role="alert">
+                  <strong>{{ comment.user.username }} say:</strong> {{ comment.content }}
                 </div>
             </div>
             {% endfor %}
-        </div>
         {% else %}
         <div class="row">
             No post submitted yet!
