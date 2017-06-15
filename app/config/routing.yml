@@ -2,6 +2,10 @@ homepage:
     path:   /
     defaults: { _controller: AppBundle:Default:index }
 
+api-register:
+    path:   /api/register
+    defaults: { _controller: AppBundle:User:registerApi }
+
 jokepost:
     path:   /jokepost/new
     defaults: { _controller: AppBundle:JokePost:new }
