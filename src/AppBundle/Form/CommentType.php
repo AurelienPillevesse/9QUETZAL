@@ -15,7 +15,9 @@ class CommentType extends AbstractType
     {
         $builder
             ->add('content', TextType::class)
-            ->add('save', SubmitType::class, array('label' => 'Create comment'))
+            ->add('save', SubmitType::class, array(
+                'label' => 'Create comment'
+            ))
         ;
     }
 

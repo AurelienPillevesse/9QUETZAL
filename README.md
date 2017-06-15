@@ -1,12 +1,18 @@
 9Quetzal
 ========
 
-docker pull mysql
+    docker pull mysql
 
-docker run --name 9quetzal-mysql -e MYSQL_ROOT_PASSWORD=root -d mysql:latest
+    docker run --name 9quetzal-mysql -e MYSQL_ROOT_PASSWORD=root -d mysql:latest
 
-php bin/console doctrine:database:create
+    composer install #For all dependencies
 
-php bin/console doctrine:schema:update --force
+    sudo apt-get install php-mysql #PDO, MySQL Drivers
+
+    php bin/console doctrine:database:create
+
+    php bin/console doctrine:schema:update --force
+
+    php bin/console server:run
 
 #### Justification de l'utilisation de FOSUserBundle

@@ -5,7 +5,7 @@
     <div class="col-md-6 col-md-offset-3">
         <h1 style="text-align:center;">{{ joke.title }}</h1>
         <div>
-            <img src="{{ asset('uploads/jokepost/' ~ joke.img) }}" style="max-width: 100%;">
+            <img src="{{ asset('uploads/jokepost/' ~ joke.img) }}" style="max-width: 100%;min-width:100%;">
             <div>
                 {{ joke.vote }} likes
             </div>
@@ -13,7 +13,6 @@
             <a href="{{ path('jokepost-unlike', {'id': joke.id }) }}">J'aime pas</a>
 
             <div class="row">
-                <form class="form-horizontal">
                         {{ form_start(form) }}
                     <div class="form-group">
                         {{ form_row(form.content, { 'attr': {'class': 'form-control','placeholder':'Comment'} })}}
@@ -22,7 +21,6 @@
                         {{ form_row(form.save, { 'attr': {'class': 'btn btn-primary  btn-sm'} })}}
                     </div>
                         {{ form_end(form) }}
-                <form>
             </div>
 
             {% for comment in joke.comments %}
