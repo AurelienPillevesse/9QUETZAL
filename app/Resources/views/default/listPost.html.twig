@@ -19,7 +19,7 @@
 
         <div class="row col-md-6">
                 {% for comment in joke.comments %}
-                <div class="row	">
+                <div class="row	"  style="overflow:hidden;">
                     <div class="alert alert-success" role="alert">
                       <strong>{{ comment.user.username }} say:</strong> {{ comment.content }}
                     </div>
