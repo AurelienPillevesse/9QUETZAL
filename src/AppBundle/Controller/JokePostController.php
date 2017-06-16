@@ -3,11 +3,15 @@
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\JokePostType;
 use AppBundle\Form\CommentType;
 use AppBundle\Entity\JokePost;
 use AppBundle\Entity\Comment;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class JokePostController extends Controller
 {
@@ -62,7 +66,25 @@ class JokePostController extends Controller
         ));
     }
 
-    public function oneAction($id, Request $request)
+    public function listApiAction(Request $request)
+    {
+        $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
+        $jokeposts = $repository->findAll();
+
+        $encoders = new JsonEncoder();
+        $normalizers = new ObjectNormalizer();
+
+        $normalizers->setCircularReferenceHandler(function ($object) {
+            return $object->getId();
+        });
+
+        $serializer = new Serializer(array($normalizers), array($encoders));
+        $jsonContent = $serializer->serialize($jokeposts, 'json');
+
+        return new JsonResponse($jsonContent);
+    }
+
+    public function oneAction(Request $request, $id)
     {
         $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
         $jokepost = $repository->findOneById($id);
@@ -108,6 +130,29 @@ class JokePostController extends Controller
         return $this->redirectToRoute('jokepost-one', array('id' => $id));
     }
 
+    public function likeApiAction(Request $request, $id)
+    {
+        $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
+        $jokepost = $repository->findOneById($id);
+        $jokepost->setVote($jokepost->getVote() + 1);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($jokepost);
+        $em->flush();
+
+        $encoders = new JsonEncoder();
+        $normalizers = new ObjectNormalizer();
+
+        $normalizers->setCircularReferenceHandler(function ($object) {
+            return $object->getId();
+        });
+
+        $serializer = new Serializer(array($normalizers), array($encoders));
+        $jsonContent = $serializer->serialize($jokepost, 'json');
+
+        return new JsonResponse($jsonContent);
+    }
+
     public function unlikeAction($id)
     {
         $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
@@ -121,5 +166,28 @@ class JokePostController extends Controller
         $this->addFlash('unlike', 'Congratulations, you unliked this post!');
 
         return $this->redirectToRoute('jokepost-one', array('id' => $id));
+    }
+
+    public function unlikeApiAction(Request $request, $id)
+    {
+        $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
+        $jokepost = $repository->findOneById($id);
+        $jokepost->setVote($jokepost->getVote() - 1);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($jokepost);
+        $em->flush();
+
+        $encoders = new JsonEncoder();
+        $normalizers = new ObjectNormalizer();
+
+        $normalizers->setCircularReferenceHandler(function ($object) {
+            return $object->getId();
+        });
+
+        $serializer = new Serializer(array($normalizers), array($encoders));
+        $jsonContent = $serializer->serialize($jokepost, 'json');
+
+        return new JsonResponse($jsonContent);
     }
 }

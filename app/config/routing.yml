@@ -2,6 +2,10 @@ homepage:
     path:   /
     defaults: { _controller: AppBundle:JokePost:list }
 
+api-register:
+    path:   /api/register
+    defaults: { _controller: AppBundle:User:registerApi }
+
 jokepost:
     path:   /jokepost/new
     defaults: { _controller: AppBundle:JokePost:new }
@@ -9,6 +13,7 @@ jokepost:
 jokepost-list:
     path:   /jokepost/list
     defaults: { _controller: AppBundle:JokePost:list }
+    methods:  [GET]
 
 jokepost-like:
     path:   /jokepost/like/{id}
@@ -28,9 +33,28 @@ jokepost-one:
     requirements:
         id: '\d+'
 
-fos_user:
-    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+api-jokepost-list:
+    path:   /api/jokepost/list
+    defaults: { _controller: AppBundle:JokePost:listApi }
+
+api-jokepost-like:
+    path:   /api/jokepost/like/{id}
+    defaults: { _controller: AppBundle:JokePost:likeApi }
+    methods:  [POST]
+    requirements:
+        id: '\d+'
+
+api-jokepost-unlike:
+    path:   /jokepost/unlike/{id}
+    defaults: { _controller: AppBundle:JokePost:unlikeApi }
+    methods:  [POST]
+    requirements:
+        id: '\d+'
 
 user-list:
     path:   /user/list
     defaults: { _controller: AppBundle:User:list }
+    methods:  [GET]
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
