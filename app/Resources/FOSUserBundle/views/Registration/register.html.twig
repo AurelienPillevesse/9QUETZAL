@@ -1,5 +1,10 @@
 {% extends "@FOSUser/layout.html.twig" %}
 
 {% block fos_user_content %}
+<div class="panel-heading">
+    <h3 class="panel-title">{{ 'registration.submit'|trans }}</h3>
+</div>
+<div class="panel-body">
 {% include "@FOSUser/Registration/register_content.html.twig" %}
+</div>
 {% endblock fos_user_content %}
