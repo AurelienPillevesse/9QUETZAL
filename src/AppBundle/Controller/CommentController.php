@@ -4,48 +4,33 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Entity\APIKey;
 use AppBundle\Entity\Comment;
-use AppBundle\Form\CommentType;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use Symfony\Component\HttpFoundation\Response;
 
 class CommentController extends Controller
 {
-    public function newAction($idJokePost, Request $request)
+    public function addApiAction($idJokePost, Request $request)
     {
-        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            throw $this->createAccessDeniedException();
+        $receivedData = json_decode($request->getContent(), true);
+        $em = $this->getDoctrine()->getManager();
+        $APIKey = $em->getRepository('AppBundle:APIKey')->findOneByHash($receivedData['token']);
+
+        if (!$APIKey) {
+            throw new BadCredentialsException();
         }
+
+        $jokepost = $em->getRepository('AppBundle:JokePost')->findOneById($idJokePost);
 
         $comment = new Comment();
-        $form = $this->createForm(CommentType::class, $comment);
+        $comment->setJokepost($jokepost);
+        $comment->setUser($APIKey->getUser());
+        $comment->setContent($receivedData['content']);
 
-        $form->handleRequest($request);
+        $em->persist($comment);
+        $em->flush();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $comment = $form->getData();
-
-            $jokePostRepository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
-            $jokepost = $jokePostRepository->findOneById($idJokePost);
-
-            $comment->setJokepost($jokepost);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($comment);
-            $em->flush();
-
-            return $this->redirectToRoute('jokepost-list');
-        }
-
-        return $this->render('default/createComment.html.twig', array(
-            'form' => $form->createView(),
-        ));
-    }
-
-    public function oneAction($idJokePost, Request $request)
-    {
-        $repository = $this->getDoctrine()->getRepository('AppBundle:Comment');
-        $comments = $jokePostRepository->findByJokePost($idJokePost);
-
-        var_dump($comments);
-        die;
+        return new Response('haha');
     }
 }

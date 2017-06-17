@@ -1,0 +1,26 @@
+AppBundle\Entity\APIKey:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\APIKeyRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        date:
+            type: datetime
+        lifetime:
+            type: integer
+        hash:
+            type: string
+            length: 255
+            unique: true
+    manyToOne:
+        user:
+            targetEntity: User
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+    lifecycleCallbacks: {  }

@@ -12,6 +12,7 @@ use AppBundle\Entity\Comment;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 class JokePostController extends Controller
 {
@@ -132,6 +133,14 @@ class JokePostController extends Controller
 
     public function likeApiAction(Request $request, $id)
     {
+        $receivedData = json_decode($request->getContent(), true);
+        $em = $this->getDoctrine()->getManager();
+        $APIKey = $em->getRepository('AppBundle:APIKey')->findOneByHash($receivedData['token']);
+
+        if (!$APIKey) {
+            throw new BadCredentialsException();
+        }
+
         $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
         $jokepost = $repository->findOneById($id);
         $jokepost->setVote($jokepost->getVote() + 1);
@@ -170,6 +179,14 @@ class JokePostController extends Controller
 
     public function unlikeApiAction(Request $request, $id)
     {
+        $receivedData = json_decode($request->getContent(), true);
+        $em = $this->getDoctrine()->getManager();
+        $APIKey = $em->getRepository('AppBundle:APIKey')->findOneByHash($receivedData['token']);
+
+        if (!$APIKey) {
+            throw new BadCredentialsException();
+        }
+
         $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
         $jokepost = $repository->findOneById($id);
         $jokepost->setVote($jokepost->getVote() - 1);

@@ -6,6 +6,16 @@ api-register:
     path:   /api/register
     defaults: { _controller: AppBundle:User:registerApi }
 
+api-signin:
+    path:   /api/signin
+    defaults: { _controller: AppBundle:APIKey:loginApi }
+    methods: [POST]
+
+api-comment:
+    path:   /api/{idJokePost}/comment
+    defaults: { _controller: AppBundle:Comment:addApi }
+    methods: [POST]
+
 jokepost:
     path:   /jokepost/new
     defaults: { _controller: AppBundle:JokePost:new }
