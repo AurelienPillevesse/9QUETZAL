@@ -10,7 +10,7 @@
         <div class="row col-md-6">
             <div class="row">
                 <h3><a href="/jokepost/{{ joke.id }}">{{ joke.title }}</a></h3>
-                <img src="{{ asset('uploads/jokepost/' ~ joke.img) }}"  style="height: 100%; width: auto; max-height: 100%;">
+                <img src="{{ asset('uploads/jokepost/' ~ joke.img) }}"  style="height: 100%; width: auto; max-width: 100%;">
             </div>
             <div class="row">
                 {{ joke.vote }} likes
@@ -29,7 +29,10 @@
     </div>
     {% else %}
     <div class="row">
+
+        <div class="row col-md-6">
         No post submitted yet!
+        </div>
     </div>
     {% endfor %}
 </div>

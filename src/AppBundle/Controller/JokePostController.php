@@ -9,6 +9,7 @@ use AppBundle\Form\JokePostType;
 use AppBundle\Form\CommentType;
 use AppBundle\Entity\JokePost;
 use AppBundle\Entity\Comment;
+use AppBundle\Entity\Vote;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -118,9 +119,23 @@ class JokePostController extends Controller
 
     public function likeAction(Request $request, $id)
     {
-        $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
-        $jokepost = $repository->findOneById($id);
-        $jokepost->setVote($jokepost->getVote() + 1);
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw $this->createAccessDeniedException();
+        }
+
+        //$repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
+        //$jokepost = $repository->findOneBy(['id' => $id]);
+
+        $repository = $this->getDoctrine()->getRepository('AppBundle:Vote');
+        $vote = $repository->findOneBy(['jokepost_id' => $id, 'user' => $this->getUser()]);
+
+        if(!$vote) {
+            $vote = new Vote();
+        }
+        
+        $vote->setJokepost($jokepost);
+        $vote->setUser(this->getUser());
+        $vote->setChoice($jokepost->getVote() + 1);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($jokepost);

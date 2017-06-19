@@ -20,7 +20,12 @@ class JokePost
     /**
      * @var int
      */
-    private $vote;
+    private $upvotes;
+
+    /**
+     * @var int
+     */
+    private $downvotes;
 
     /**
      * @var string
@@ -126,9 +131,9 @@ class JokePost
      *
      * @return JokePost
      */
-    public function setVote($vote)
+    public function setUpvotes($upvotes)
     {
-        $this->vote = $vote;
+        $this->upvotes = $upvotes;
 
         return $this;
     }
@@ -138,7 +143,31 @@ class JokePost
      *
      * @return int
      */
-    public function getVote()
+    public function getUpvotes()
+    {
+        return $this->upvotes;
+    }
+
+    /**
+     * Set vote.
+     *
+     * @param int $vote
+     *
+     * @return JokePost
+     */
+    public function setDownvotes($downvote)
+    {
+        $this->downvote = $downvote;
+
+        return $this;
+    }
+
+    /**
+     * Get vote.
+     *
+     * @return int
+     */
+    public function getDownvotes()
     {
         return $this->vote;
     }

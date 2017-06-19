@@ -11,4 +11,16 @@ AppBundle\Entity\Vote:
     fields:
         choice:
             type: integer
+    manyToOne:
+        jokepost:
+            targetEntity: JokePost
+            inversedBy: comments
+            joinColumn:
+                name: jokepost_id
+                referencedColumnName: id
+        user:
+            targetEntity: User
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
     lifecycleCallbacks: {  }

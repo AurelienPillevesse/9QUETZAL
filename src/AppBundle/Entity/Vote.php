@@ -15,7 +15,18 @@ class Vote
     /**
      * @var int
      */
-    private $choice;
+    private $type;
+
+    /**
+     * @var \AppBundle\Entity\JokePost
+     */
+    private $jokepost;
+
+
+    /**
+     * @var \AppBundle\Entity\User
+     */
+    private $user;
 
     /**
      * Get id.
@@ -28,26 +39,74 @@ class Vote
     }
 
     /**
-     * Set choice.
+     * Set type.
      *
-     * @param int $choice
+     * @param int $type
      *
      * @return Vote
      */
-    public function setChoice($choice)
+    public function setType($type)
     {
-        $this->choice = $choice;
+        $this->type = $type;
 
         return $this;
     }
 
     /**
-     * Get choice.
+     * Get type.
      *
      * @return int
      */
-    public function getChoice()
+    public function getType()
     {
-        return $this->choice;
+        return $this->type;
+    }
+
+    /**
+     * Set jokepost.
+     *
+     * @param \AppBundle\Entity\JokePost $jokepost
+     *
+     * @return Comment
+     */
+    public function setJokepost(\AppBundle\Entity\JokePost $jokepost = null)
+    {
+        $this->jokepost = $jokepost;
+
+        return $this;
+    }
+
+    /**
+     * Get jokepost.
+     *
+     * @return \AppBundle\Entity\JokePost
+     */
+    public function getJokepost()
+    {
+        return $this->jokepost;
+    }
+
+    /**
+     * Set user.
+     *
+     * @param \AppBundle\Entity\User $user
+     *
+     * @return Comment
+     */
+    public function setUser(\AppBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user.
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }
