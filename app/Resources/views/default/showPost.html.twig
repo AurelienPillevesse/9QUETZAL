@@ -7,15 +7,15 @@
         <div>
             <img src="{{ asset('uploads/jokepost/' ~ joke.img) }}" style="height: 100%; width: auto; max-width: 100%;">
              <div class="progress">
-              <div class="progress-bar progress-bar-success" role="progressbar" style="width:{{ ((joke.upvotes + joke.downvotes) ==  0) ? 0: (joke.upvotes / (joke.upvotes + joke.downvotes))*100}}%;">
-                J'aime
+              <div class="progress-bar progress-bar-success" role="progressbar" style="width:{{ ((joke.upvotes + joke.downvotes) ==  0) ? 0: (joke.upvotes / (joke.upvotes - joke.downvotes))*100}}%;">
+                {{joke.upvotes}} likes
               </div>
-              <div class="progress-bar progress-bar-danger" role="progressbar" style="width:{{ ((joke.upvotes + joke.downvotes) ==  0) ? 0: (joke.downvotes / (joke.upvotes + joke.downvotes))*100}}%;">
-                Je n'aime pas
-              </div>
+              <div class="progress-bar progress-bar-danger" role="progressbar" style="width:{{ ((joke.upvotes + joke.downvotes) ==  0) ? 0: (-(joke.downvotes) / (joke.upvotes - joke.downvotes))*100}}%;">
+                 {{(-(joke.downvotes))}} dislikes
+                </div>
             </div>
             <a href="{{ path('jokepost-like', {'id': joke.id }) }}">J'aime</a>
-            <a href="{{ path('jokepost-unlike', {'id': joke.id }) }}">J'aime pas</a>
+            <a href="{{ path('jokepost-unlike', {'id': joke.id }) }}" style="float:right;">J'aime pas</a>
 
             <div class="row">
                         {{ form_start(form) }}
