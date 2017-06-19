@@ -121,27 +121,25 @@ class JokePostController extends Controller
     {
         if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw $this->createAccessDeniedException();
-        }
+        }else{
+            $jokepost = $repository->findOneById($id);
+            $repository = $this->getDoctrine()->getRepository('AppBundle:Vote');
+            $vote = $repository->findOneBy(['jokepost_id' => $id, 'user' => $this->getUser()]);
 
-        //$repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
-        //$jokepost = $repository->findOneBy(['id' => $id]);
+            if(!$vote) {
+                $vote = new Vote();
+            }
+            $jokepost.upVotes();
+            $vote->setJokepost($jokepost);
+            $vote->setUser($this->getUser());
+            $vote->setChoice(1);
 
-        $repository = $this->getDoctrine()->getRepository('AppBundle:Vote');
-        $vote = $repository->findOneBy(['jokepost_id' => $id, 'user' => $this->getUser()]);
-
-        if(!$vote) {
-            $vote = new Vote();
-        }
-        
-        $vote->setJokepost($jokepost);
-        $vote->setUser(this->getUser());
-        $vote->setChoice($jokepost->getVote() + 1);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($jokepost);
-        $em->flush();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($jokepost);
+            $em->flush();
 
         $this->addFlash('like', 'Congratulations, your liked this post!');
+        }
 
         return $this->redirectToRoute('jokepost-one', array('id' => $id));
     }
@@ -179,16 +177,28 @@ class JokePostController extends Controller
 
     public function unlikeAction($id)
     {
-        $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
-        $jokepost = $repository->findOneById($id);
-        $jokepost->setVote($jokepost->getVote() - 1);
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw $this->createAccessDeniedException();
+        }else{
+            $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
+            $jokepost = $repository->findOneById($id);
+            $vote = $repository->findOneBy(['jokepost_id' => $id, 'user' => $this->getUser()]);
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($jokepost);
-        $em->flush();
+            if(!$vote) {
+                $vote = new Vote();
+            }
+            $jokepost.downVotes();
+            $vote->setJokepost($jokepost);
+            $vote->setUser($this->getUser());
+            $vote->setChoice(-1);
 
-        $this->addFlash('unlike', 'Congratulations, you unliked this post!');
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($jokepost);
+            $em->flush();
 
+
+            $this->addFlash('unlike', 'Congratulations, you unliked this post!');
+        }
         return $this->redirectToRoute('jokepost-one', array('id' => $id));
     }
 

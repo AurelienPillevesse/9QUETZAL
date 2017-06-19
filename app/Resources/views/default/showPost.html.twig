@@ -6,9 +6,14 @@
         <h1 style="text-align:center;">{{ joke.title }}</h1>
         <div>
             <img src="{{ asset('uploads/jokepost/' ~ joke.img) }}" style="height: 100%; width: auto; max-width: 100%;">
-            <div>
-                {{ joke.vote }} likes
-            </div>
+             <div class="progress">
+              <div class="progress-bar progress-bar-success" role="progressbar" style="width:{{ (joke.upvotes / (joke.upvotes + joke.upvotes))*100 }}">
+                J'aime
+              </div>
+              <div class="progress-bar progress-bar-danger" role="progressbar" style="width:{{ (joke.downvotes / (joke.upvotes + joke.downvotes))*100 }}">
+                Je n'aime pas
+              </div>
+            </div> 
             <a href="{{ path('jokepost-like', {'id': joke.id }) }}">J'aime</a>
             <a href="{{ path('jokepost-unlike', {'id': joke.id }) }}">J'aime pas</a>
 
