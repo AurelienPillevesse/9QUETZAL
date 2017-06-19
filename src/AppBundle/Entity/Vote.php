@@ -15,7 +15,7 @@ class Vote
     /**
      * @var int
      */
-    private $type;
+    private $choice;
 
     /**
      * @var \AppBundle\Entity\JokePost
@@ -39,27 +39,27 @@ class Vote
     }
 
     /**
-     * Set type.
+     * Set choice.
      *
-     * @param int $type
+     * @param int $choice
      *
      * @return Vote
      */
-    public function setType($type)
+    public function setChoice($choice)
     {
-        $this->type = $type;
+        $this->choice = $choice;
 
         return $this;
     }
 
     /**
-     * Get type.
+     * Get choice.
      *
      * @return int
      */
-    public function getType()
+    public function getChoice()
     {
-        return $this->type;
+        return $this->choice;
     }
 
     /**

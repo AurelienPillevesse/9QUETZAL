@@ -155,9 +155,9 @@ class JokePost
      *
      * @return JokePost
      */
-    public function setDownvotes($downvote)
+    public function setDownvotes($downvotes)
     {
-        $this->downvote = $downvote;
+        $this->downvotes = $downvotes;
 
         return $this;
     }
@@ -169,7 +169,7 @@ class JokePost
      */
     public function getDownvotes()
     {
-        return $this->vote;
+        return $this->downvotes;
     }
 
     /**

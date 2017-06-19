@@ -119,17 +119,18 @@ class JokePostController extends Controller
 
     public function likeAction(Request $request, $id)
     {
+        $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
+        $repositoryVote = $this->getDoctrine()->getRepository('AppBundle:Vote');
         if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw $this->createAccessDeniedException();
         }else{
             $jokepost = $repository->findOneById($id);
-            $repository = $this->getDoctrine()->getRepository('AppBundle:Vote');
-            $vote = $repository->findOneBy(['jokepost_id' => $id, 'user' => $this->getUser()]);
+            $jokepost.setUpvotes($this.getUpvotes() + 1);
+            $vote = $repositoryVote->findOneBy(['jokepost_id' => $id, 'user' => $this->getUser()]);
 
             if(!$vote) {
                 $vote = new Vote();
             }
-            $jokepost.upVotes();
             $vote->setJokepost($jokepost);
             $vote->setUser($this->getUser());
             $vote->setChoice(1);
@@ -138,9 +139,36 @@ class JokePostController extends Controller
             $em->persist($jokepost);
             $em->flush();
 
-        $this->addFlash('like', 'Congratulations, your liked this post!');
+            $this->addFlash('like', 'Congratulations, your liked this post!');
         }
 
+        return $this->redirectToRoute('jokepost-one', array('id' => $id));
+    }
+
+    public function unlikeAction($id)
+    {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw $this->createAccessDeniedException();
+        }else{
+            $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
+            $jokepost = $repository->findOneById($id);
+            $vote = $repository->findOneBy(['jokepost_id' => $id, 'user' => $this->getUser()]);
+
+            if(!$vote) {
+                $vote = new Vote();
+            }
+            $jokepost.setDownvotes($this.getDownvotes() - 1);
+            $vote->setJokepost($jokepost);
+            $vote->setUser($this->getUser());
+            $vote->setChoice(-1);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($jokepost);
+            $em->flush();
+
+
+            $this->addFlash('unlike', 'Congratulations, you unliked this post!');
+        }
         return $this->redirectToRoute('jokepost-one', array('id' => $id));
     }
 
@@ -175,32 +203,6 @@ class JokePostController extends Controller
         return new JsonResponse($jsonContent);
     }
 
-    public function unlikeAction($id)
-    {
-        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            throw $this->createAccessDeniedException();
-        }else{
-            $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
-            $jokepost = $repository->findOneById($id);
-            $vote = $repository->findOneBy(['jokepost_id' => $id, 'user' => $this->getUser()]);
-
-            if(!$vote) {
-                $vote = new Vote();
-            }
-            $jokepost.downVotes();
-            $vote->setJokepost($jokepost);
-            $vote->setUser($this->getUser());
-            $vote->setChoice(-1);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($jokepost);
-            $em->flush();
-
-
-            $this->addFlash('unlike', 'Congratulations, you unliked this post!');
-        }
-        return $this->redirectToRoute('jokepost-one', array('id' => $id));
-    }
 
     public function unlikeApiAction(Request $request, $id)
     {
