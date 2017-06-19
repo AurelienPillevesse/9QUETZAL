@@ -23,10 +23,10 @@ class APIKeyController extends Controller
         $form->submit($receivedCredentials);
 
         if (!$receivedCredentials['username']) {
-            throw new BadRequestHttpException('No username field in request');
+            throw new BadCredentialsException('No username field in request');
         }
         if (!$receivedCredentials['password']) {
-            throw new BadRequestHttpException('No password field in request');
+            throw new BadCredentialsException('No password field in request');
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -40,15 +40,17 @@ class APIKeyController extends Controller
         $isPasswordValid = $encoder->isPasswordValid($user, $credentials->getPassword());
 
         if ($isPasswordValid) {
-            $APIKeyUser = $em->getRepository('AppBundle:APIKey')->findOneByUser($user->getId());
+            $APIKeyUser = new APIKey();
+            $APIKeyUser->setUser($user);
 
-            if (!$APIKeyUser) {
-                $APIKeyUser = new APIKey();
-                $APIKeyUser->setUser($user);
+            $em->persist($APIKeyUser);
 
-                $em->persist($APIKeyUser);
-                $em->flush();
+            $AllAPIKeys = $em->getRepository('AppBundle:APIKey')->findByUser($user);
+            foreach ($AllAPIKeys as $key) {
+                $key->setLifetime(0);
+                $em->persist($key);
             }
+            $em->flush();
 
             $encoders = new JsonEncoder();
             $normalizers = new ObjectNormalizer();

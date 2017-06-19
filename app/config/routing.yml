@@ -7,7 +7,7 @@ api-register:
     defaults: { _controller: AppBundle:User:registerApi }
 
 api-signin:
-    path:   /api/signin
+    path:   /api/login
     defaults: { _controller: AppBundle:APIKey:loginApi }
     methods: [POST]
 

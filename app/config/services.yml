@@ -7,3 +7,24 @@ services:
     #service_name:
     #    class: AppBundle\Directory\ClassName
     #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']
+    app.encoder.json:
+        class: 'Symfony\Component\Serializer\Encoder\JsonEncoder'
+
+    app.normalizer.user:
+        class: 'AppBundle\Service\UserNormalizer'
+
+    app.normalizer.jokepost:
+        class: 'AppBundle\Service\JokePostNormalizer'
+
+    app.normalizer.comment:
+        class: 'AppBundle\Service\CommentNormalizer'
+
+    app.serializer.default:
+        class: 'Symfony\Component\Serializer\Serializer'
+        arguments:
+            0:
+                - '@app.normalizer.user'
+                - '@app.normalizer.jokepost'
+                - '@app.normalizer.comment'
+            1:
+                - '@app.encoder.json'

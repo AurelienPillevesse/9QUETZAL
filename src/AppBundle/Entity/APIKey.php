@@ -144,4 +144,9 @@ class APIKey
         $this->setLifetime(3600 * 24);
         $this->setHash(uniqid());
     }
+
+    public function verify($APIKey)
+    {
+        return true;
+    }
 }

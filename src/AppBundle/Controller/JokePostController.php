@@ -13,9 +13,18 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class JokePostController extends Controller
 {
+    private $serializer;
+
+    public function setContainer(ContainerInterface $container = null)
+    {
+        parent::setContainer($container);
+        $this->serializer = $this->get('app.serializer.default');
+    }
+
     public function newAction(Request $request)
     {
         if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -72,7 +81,7 @@ class JokePostController extends Controller
         $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
         $jokeposts = $repository->findAll();
 
-        $encoders = new JsonEncoder();
+        /*$encoders = new JsonEncoder();
         $normalizers = new ObjectNormalizer();
 
         $normalizers->setCircularReferenceHandler(function ($object) {
@@ -82,7 +91,9 @@ class JokePostController extends Controller
         $serializer = new Serializer(array($normalizers), array($encoders));
         $jsonContent = $serializer->serialize($jokeposts, 'json');
 
-        return new JsonResponse($jsonContent);
+        return new JsonResponse($jsonContent);*/
+
+        return new JsonResponse($this->serializer->serialize($jokeposts, 'json'), 200);
     }
 
     public function oneAction(Request $request, $id)
