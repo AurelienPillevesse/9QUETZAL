@@ -217,16 +217,16 @@ class JokePost
     /**
      * Realize a down vote.
      */
-    public function downVote()
-    {
-        $this.setDownvotes($this.getDownvotes() - 1);
-    }
+    //public function downVote()
+    //{
+    //    $this->setDownvotes($this->getDownvotes() - 1);
+    //}
 
     /**
-     * Realize an up vote.
+     * Realize an up vote->
      */
-    public function upVote()
-    {
-        $this.setDownvotes($this.getDownvotes() + 1);
-    }
+    //public function upVote()
+    //{
+    ////    $this->setDownvotes($this->getDownvotes() + 1);
+    //}
 }

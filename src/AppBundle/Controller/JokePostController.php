@@ -125,8 +125,8 @@ class JokePostController extends Controller
             throw $this->createAccessDeniedException();
         }else{
             $jokepost = $repository->findOneById($id);
-            $jokepost.setUpvotes($this.getUpvotes() + 1);
-            $vote = $repositoryVote->findOneBy(['jokepost_id' => $id, 'user' => $this->getUser()]);
+            $jokepost->setUpvotes($jokepost->getUpvotes() + 1);
+            $vote = $repositoryVote->findOneBy(['jokepost' => $jokepost, 'user' => $this->getUser()]);
 
             if(!$vote) {
                 $vote = new Vote();
@@ -147,17 +147,18 @@ class JokePostController extends Controller
 
     public function unlikeAction($id)
     {
+        $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
+        $repositoryVote = $this->getDoctrine()->getRepository('AppBundle:Vote');
         if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw $this->createAccessDeniedException();
         }else{
-            $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
             $jokepost = $repository->findOneById($id);
-            $vote = $repository->findOneBy(['jokepost_id' => $id, 'user' => $this->getUser()]);
+            $vote = $repositoryVote->findOneBy(['jokepost' => $jokepost, 'user' => $this->getUser()]);
 
             if(!$vote) {
                 $vote = new Vote();
             }
-            $jokepost.setDownvotes($this.getDownvotes() - 1);
+            $jokepost->setDownvotes($jokepost->getDownvotes() - 1);
             $vote->setJokepost($jokepost);
             $vote->setUser($this->getUser());
             $vote->setChoice(-1);
