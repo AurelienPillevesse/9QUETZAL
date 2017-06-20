@@ -18,14 +18,16 @@
             </div>
         </div>
 
-        <div class="row col-md-6">
-                {% for comment in joke.comments %}
-                <div class="row	"  style="overflow:hidden;">
-                    <div class="alert alert-success" role="alert">
-                      <strong>{{ comment.user.username }} say:</strong> {{ comment.content }}
-                    </div>
-                </div>
-                {% endfor %}
+            <div class="row col-md-6" style="margin-top:50px;">
+                  {% set opacity = 1 %}
+                      {% for comment in joke.comments |slice(0,6) %}
+                      <div class="row">
+                          <div class="alert alert-success" role="alert" style="opacity:{{ opacity }};">
+                                <strong>{{ comment.user.username }} say:</strong> {{ comment.content }}
+                              </div>
+                          </div>
+                      {% set opacity = opacity - 0.20 %}
+                          {% endfor %}
         </div>
     </div>
     {% else %}
