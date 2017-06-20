@@ -3,12 +3,12 @@
 namespace AppBundle\Entity;
 
 /**
- * JokePost.
+ * JokePost
  */
 class JokePost
 {
     /**
-     * @var int
+     * @var integer
      */
     private $id;
 
@@ -18,9 +18,19 @@ class JokePost
     private $title;
 
     /**
-     * @var int
+     * @var integer
      */
-    private $vote;
+    private $upvotes;
+
+    /**
+     * @var integer
+     */
+    private $downvotes;
+
+    /**
+     * @var integer
+     */
+    private $totalvotes;
 
     /**
      * @var string
@@ -38,9 +48,23 @@ class JokePost
     private $comments;
 
     /**
-     * Get id.
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $votes;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->votes = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -48,7 +72,7 @@ class JokePost
     }
 
     /**
-     * Set title.
+     * Set title
      *
      * @param string $title
      *
@@ -62,7 +86,7 @@ class JokePost
     }
 
     /**
-     * Get title.
+     * Get title
      *
      * @return string
      */
@@ -72,7 +96,79 @@ class JokePost
     }
 
     /**
-     * Set img.
+     * Set upvotes
+     *
+     * @param integer $upvotes
+     *
+     * @return JokePost
+     */
+    public function setUpvotes($upvotes)
+    {
+        $this->upvotes = $upvotes;
+
+        return $this;
+    }
+
+    /**
+     * Get upvotes
+     *
+     * @return integer
+     */
+    public function getUpvotes()
+    {
+        return $this->upvotes;
+    }
+
+    /**
+     * Set downvotes
+     *
+     * @param integer $downvotes
+     *
+     * @return JokePost
+     */
+    public function setDownvotes($downvotes)
+    {
+        $this->downvotes = $downvotes;
+
+        return $this;
+    }
+
+    /**
+     * Get downvotes
+     *
+     * @return integer
+     */
+    public function getDownvotes()
+    {
+        return $this->downvotes;
+    }
+
+    /**
+     * Set totalvotes
+     *
+     * @param integer $totalvotes
+     *
+     * @return JokePost
+     */
+    public function setTotalvotes($totalvotes)
+    {
+        $this->totalvotes = $totalvotes;
+
+        return $this;
+    }
+
+    /**
+     * Get totalvotes
+     *
+     * @return integer
+     */
+    public function getTotalvotes()
+    {
+        return $this->totalvotes;
+    }
+
+    /**
+     * Set img
      *
      * @param string $img
      *
@@ -86,7 +182,7 @@ class JokePost
     }
 
     /**
-     * Get img.
+     * Get img
      *
      * @return string
      */
@@ -96,7 +192,7 @@ class JokePost
     }
 
     /**
-     * Set date.
+     * Set date
      *
      * @param \DateTime $date
      *
@@ -110,7 +206,7 @@ class JokePost
     }
 
     /**
-     * Get date.
+     * Get date
      *
      * @return \DateTime
      */
@@ -120,39 +216,7 @@ class JokePost
     }
 
     /**
-     * Set vote.
-     *
-     * @param int $vote
-     *
-     * @return JokePost
-     */
-    public function setVote($vote)
-    {
-        $this->vote = $vote;
-
-        return $this;
-    }
-
-    /**
-     * Get vote.
-     *
-     * @return int
-     */
-    public function getVote()
-    {
-        return $this->vote;
-    }
-
-    /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add comment.
+     * Add comment
      *
      * @param \AppBundle\Entity\Comment $comment
      *
@@ -166,7 +230,7 @@ class JokePost
     }
 
     /**
-     * Remove comment.
+     * Remove comment
      *
      * @param \AppBundle\Entity\Comment $comment
      */
@@ -176,7 +240,7 @@ class JokePost
     }
 
     /**
-     * Get comments.
+     * Get comments
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -184,4 +248,39 @@ class JokePost
     {
         return $this->comments;
     }
+
+    /**
+     * Add vote
+     *
+     * @param \AppBundle\Entity\Vote $vote
+     *
+     * @return JokePost
+     */
+    public function addVote(\AppBundle\Entity\Vote $vote)
+    {
+        $this->votes[] = $vote;
+
+        return $this;
+    }
+
+    /**
+     * Remove vote
+     *
+     * @param \AppBundle\Entity\Vote $vote
+     */
+    public function removeVote(\AppBundle\Entity\Vote $vote)
+    {
+        $this->votes->removeElement($vote);
+    }
+
+    /**
+     * Get votes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVotes()
+    {
+        return $this->votes;
+    }
 }
+

@@ -3,24 +3,40 @@
 namespace AppBundle\Entity;
 
 /**
- * Vote.
+ * Vote
  */
 class Vote
 {
     /**
-     * @var int
+     * @var integer
      */
     private $id;
 
     /**
-     * @var int
+     * @var boolean
      */
-    private $choice;
+    private $up;
 
     /**
-     * Get id.
+     * @var boolean
+     */
+    private $down;
+
+    /**
+     * @var \AppBundle\Entity\JokePost
+     */
+    private $jokepost;
+
+    /**
+     * @var \AppBundle\Entity\User
+     */
+    private $user;
+
+
+    /**
+     * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -28,26 +44,99 @@ class Vote
     }
 
     /**
-     * Set choice.
+     * Set up
      *
-     * @param int $choice
+     * @param boolean $up
      *
      * @return Vote
      */
-    public function setChoice($choice)
+    public function setUp($up)
     {
-        $this->choice = $choice;
+        $this->up = $up;
 
         return $this;
     }
 
     /**
-     * Get choice.
+     * Get up
      *
-     * @return int
+     * @return boolean
      */
-    public function getChoice()
+    public function getUp()
     {
-        return $this->choice;
+        return $this->up;
+    }
+
+    /**
+     * Set down
+     *
+     * @param boolean $down
+     *
+     * @return Vote
+     */
+    public function setDown($down)
+    {
+        $this->down = $down;
+
+        return $this;
+    }
+
+    /**
+     * Get down
+     *
+     * @return boolean
+     */
+    public function getDown()
+    {
+        return $this->down;
+    }
+
+    /**
+     * Set jokepost
+     *
+     * @param \AppBundle\Entity\JokePost $jokepost
+     *
+     * @return Vote
+     */
+    public function setJokepost(\AppBundle\Entity\JokePost $jokepost = null)
+    {
+        $this->jokepost = $jokepost;
+
+        return $this;
+    }
+
+    /**
+     * Get jokepost
+     *
+     * @return \AppBundle\Entity\JokePost
+     */
+    public function getJokepost()
+    {
+        return $this->jokepost;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\User $user
+     *
+     * @return Vote
+     */
+    public function setUser(\AppBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }
+

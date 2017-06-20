@@ -9,6 +9,7 @@ use AppBundle\Form\JokePostType;
 use AppBundle\Form\CommentType;
 use AppBundle\Entity\JokePost;
 use AppBundle\Entity\Comment;
+use AppBundle\Entity\Vote;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -39,7 +40,9 @@ class JokePostController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $jokepost = $form->getData();
             $jokepost->setDate(new \DateTime('NOW'));
-            $jokepost->setVote(0);
+            $jokepost->setUpvotes(0);
+            $jokepost->setDownvotes(0);
+            $jokepost->setTotalvotes(0);
 
             $imgFile = $jokepost->getImg();
 
@@ -129,14 +132,35 @@ class JokePostController extends Controller
 
     public function likeAction(Request $request, $id)
     {
-        $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
-        $jokepost = $repository->findOneById($id);
-        $jokepost->setVote($jokepost->getVote() + 1);
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $em = $this->getDoctrine()->getManager();
-        $em->persist($jokepost);
-        $em->flush();
+        $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
+        $repositoryVote = $this->getDoctrine()->getRepository('AppBundle:Vote');
+        $jokepost = $repository->findOneById($id);
+        $vote = $repositoryVote->findOneBy(['jokepost' => $jokepost, 'user' => $this->getUser()]);
 
+        if (!$vote) {
+            $vote = new Vote();
+            $vote->setJokepost($jokepost);
+            $vote->setUser($this->getUser());
+            $jokepost->setUpvotes($jokepost->getUpvotes() + 1);
+            $jokepost->setTotalvotes($jokepost->getTotalvotes() + 1);
+        }
+
+        if ($vote->getDown()) {
+            $jokepost->setDownvotes($jokepost->getDownvotes() - 1);
+            $jokepost->setUpvotes($jokepost->getUpvotes() + 1);
+        }
+
+        $vote->setUp(true);
+        $vote->setDown(false);
+
+        $em->persist($jokepost);
+        $em->persist($vote);
+        $em->flush();
         $this->addFlash('like', 'Congratulations, your liked this post!');
 
         return $this->redirectToRoute('jokepost-one', array('id' => $id));
@@ -175,15 +199,36 @@ class JokePostController extends Controller
 
     public function unlikeAction($id)
     {
-        $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
-        $jokepost = $repository->findOneById($id);
-        $jokepost->setVote($jokepost->getVote() - 1);
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $em = $this->getDoctrine()->getManager();
-        $em->persist($jokepost);
-        $em->flush();
+        $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
+        $repositoryVote = $this->getDoctrine()->getRepository('AppBundle:Vote');
+        $jokepost = $repository->findOneById($id);
+        $vote = $repositoryVote->findOneBy(['jokepost' => $jokepost, 'user' => $this->getUser()]);
 
-        $this->addFlash('unlike', 'Congratulations, you unliked this post!');
+        if (!$vote) {
+            $vote = new Vote();
+            $vote->setJokepost($jokepost);
+            $vote->setUser($this->getUser());
+            $jokepost->setTotalvotes($jokepost->getTotalvotes() + 1);
+            $jokepost->setDownvotes($jokepost->getDownvotes() + 1);
+        }
+
+        if ($vote->getUp()) {
+            $jokepost->setUpvotes($jokepost->getUpvotes() - 1);
+            $jokepost->setDownvotes($jokepost->getDownvotes() + 1);
+        }
+
+        $vote->setDown(true);
+        $vote->setUp(false);
+
+        $em->persist($jokepost);
+        $em->persist($vote);
+        $em->flush();
+        $this->addFlash('like', 'Congratulations, your liked this post!');
 
         return $this->redirectToRoute('jokepost-one', array('id' => $id));
     }

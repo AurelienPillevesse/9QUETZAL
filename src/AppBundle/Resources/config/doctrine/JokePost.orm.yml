@@ -12,7 +12,11 @@ AppBundle\Entity\JokePost:
         title:
             type: string
             length: 255
-        vote:
+        upvotes:
+            type: integer
+        downvotes:
+            type: integer
+        totalvotes:
             type: integer
         img:
             type: string
@@ -23,4 +27,7 @@ AppBundle\Entity\JokePost:
         comments:
             targetEntity: Comment
             mappedBy: jokepost
+        votes:
+            targetEntity: Vote
+            mappedBy: vote
     lifecycleCallbacks: {  }

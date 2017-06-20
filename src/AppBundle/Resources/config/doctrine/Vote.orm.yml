@@ -9,6 +9,19 @@ AppBundle\Entity\Vote:
             generator:
                 strategy: AUTO
     fields:
-        choice:
-            type: integer
+        up:
+            type: boolean
+        down:
+            type: boolean
+    manyToOne:
+        jokepost:
+            targetEntity: JokePost
+            joinColumn:
+                name: jokepost_id
+                referencedColumnName: id
+        user:
+            targetEntity: User
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
     lifecycleCallbacks: {  }
