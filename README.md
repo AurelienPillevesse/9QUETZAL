@@ -7,12 +7,12 @@
 
     composer install #For all dependencies
 
-    sudo apt-get install php-mysql #PDO, MySQL Drivers
-
     php bin/console doctrine:database:create
 
     php bin/console doctrine:schema:update --force
 
     php bin/console server:run
+
+    If you come back on the project another time after the docker run and you didn't destroy it, run: docker start 9quetzal-mysql
 
 #### Justification de l'utilisation de FOSUserBundle
