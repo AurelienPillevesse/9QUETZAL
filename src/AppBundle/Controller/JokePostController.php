@@ -155,12 +155,34 @@ class JokePostController extends Controller
             throw new BadCredentialsException("Need the user's token");
         }
 
-        $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
-        $jokepost = $repository->findOneById($id);
-        $jokepost->setVote($jokepost->getVote() + 1);
+        $tmpDateApiKey = $APIKey->getDate();
+        if ($tmpDateApiKey->modify('+'.$APIKey->getLifetime().' seconds') < new \DateTime('now')) {
+            throw new BadCredentialsException('Token expired');
+        }
 
-        $em = $this->getDoctrine()->getManager();
+        $user = $APIKey->getUser();
+
+        $jokepostRepo = $em->getRepository('AppBundle:JokePost');
+        $voteRepo = $em->getRepository('AppBundle:Vote');
+
+        $jokepost = $jokepostRepo->findOneById($id);
+        $vote = $voteRepo->findOneBy(['jokepost' => $jokepost, 'user' => $user]);
+
+        if (!$vote) {
+            $vote = new Vote();
+            $vote->setJokepost($jokepost);
+            $vote->setUser($user);
+            $jokepost->voteUp();
+        }
+
+        if ($vote->getDown()) {
+            $jokepost->voteDownToUp();
+        }
+
+        $vote->voteUp();
+
         $em->persist($jokepost);
+        $em->persist($vote);
         $em->flush();
 
         return new JsonResponse($this->serializer->serialize($jokepost, 'json'), 200);
@@ -210,12 +232,34 @@ class JokePostController extends Controller
             throw new BadCredentialsException("Need the user's token");
         }
 
-        $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
-        $jokepost = $repository->findOneById($id);
-        $jokepost->setVote($jokepost->getVote() - 1);
+        $tmpDateApiKey = $APIKey->getDate();
+        if ($tmpDateApiKey->modify('+'.$APIKey->getLifetime().' seconds') < new \DateTime('now')) {
+            throw new BadCredentialsException('Token expired');
+        }
 
-        $em = $this->getDoctrine()->getManager();
+        $user = $APIKey->getUser();
+
+        $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
+        $repositoryVote = $this->getDoctrine()->getRepository('AppBundle:Vote');
+
+        $jokepost = $repository->findOneById($id);
+        $vote = $repositoryVote->findOneBy(['jokepost' => $jokepost, 'user' => $user]);
+
+        if (!$vote) {
+            $vote = new Vote();
+            $vote->setJokepost($jokepost);
+            $vote->setUser($user);
+            $jokepost->voteDown();
+        }
+
+        if ($vote->getUp()) {
+            $jokepost->voteUpToDown();
+        }
+
+        $vote->voteDown();
+
         $em->persist($jokepost);
+        $em->persist($vote);
         $em->flush();
 
         return new JsonResponse($this->serializer->serialize($jokepost, 'json'), 200);

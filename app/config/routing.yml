@@ -51,7 +51,7 @@ api-jokepost-like:
         id: '\d+'
 
 api-jokepost-unlike:
-    path:   /jokepost/unlike/{id}
+    path:   /api/jokepost/unlike/{id}
     defaults: { _controller: AppBundle:JokePost:unlikeApi }
     methods:  [POST]
     requirements:
