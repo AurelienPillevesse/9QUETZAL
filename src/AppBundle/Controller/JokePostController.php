@@ -11,8 +11,6 @@ use AppBundle\Entity\JokePost;
 use AppBundle\Entity\Comment;
 use AppBundle\Entity\Vote;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -45,11 +43,7 @@ class JokePostController extends Controller
             $jokepost->setTotalvotes(0);
 
             $imgFile = $jokepost->getImg();
-
-            // Generate a unique name for the file before saving it
             $fileName = md5(uniqid()).'.'.$imgFile->guessExtension();
-
-            // Move the file to the directory where brochures are stored
             $imgFile->move(
                 $this->getParameter('jokepost_directory'),
                 $fileName
@@ -83,18 +77,6 @@ class JokePostController extends Controller
     {
         $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
         $jokeposts = $repository->findAll();
-
-        /*$encoders = new JsonEncoder();
-        $normalizers = new ObjectNormalizer();
-
-        $normalizers->setCircularReferenceHandler(function ($object) {
-            return $object->getId();
-        });
-
-        $serializer = new Serializer(array($normalizers), array($encoders));
-        $jsonContent = $serializer->serialize($jokeposts, 'json');
-
-        return new JsonResponse($jsonContent);*/
 
         return new JsonResponse($this->serializer->serialize($jokeposts, 'json'), 200);
     }
@@ -184,17 +166,7 @@ class JokePostController extends Controller
         $em->persist($jokepost);
         $em->flush();
 
-        $encoders = new JsonEncoder();
-        $normalizers = new ObjectNormalizer();
-
-        $normalizers->setCircularReferenceHandler(function ($object) {
-            return $object->getId();
-        });
-
-        $serializer = new Serializer(array($normalizers), array($encoders));
-        $jsonContent = $serializer->serialize($jokepost, 'json');
-
-        return new JsonResponse($jsonContent);
+        return new JsonResponse($this->serializer->serialize($jokepost, 'json'), 200);
     }
 
     public function unlikeAction($id)
@@ -228,7 +200,7 @@ class JokePostController extends Controller
         $em->persist($jokepost);
         $em->persist($vote);
         $em->flush();
-        $this->addFlash('like', 'Congratulations, your liked this post!');
+        $this->addFlash('unlike', 'Ooooh, your unliked this post!');
 
         return $this->redirectToRoute('jokepost-one', array('id' => $id));
     }
@@ -251,16 +223,6 @@ class JokePostController extends Controller
         $em->persist($jokepost);
         $em->flush();
 
-        $encoders = new JsonEncoder();
-        $normalizers = new ObjectNormalizer();
-
-        $normalizers->setCircularReferenceHandler(function ($object) {
-            return $object->getId();
-        });
-
-        $serializer = new Serializer(array($normalizers), array($encoders));
-        $jsonContent = $serializer->serialize($jokepost, 'json');
-
-        return new JsonResponse($jsonContent);
+        return new JsonResponse($this->serializer->serialize($jokepost, 'json'), 200);
     }
 }

@@ -3,38 +3,51 @@
 {% block body %}
 <div class="container">
     <div class="col-md-6 col-md-offset-3">
+
+        {% for message in app.session.flashBag.get('like') %}
+        <div class="flash-notice">
+            {{ message }}
+        </div>
+        {% endfor %}
+
+        {% for message in app.session.flashBag.get('unlike') %}
+        <div class="flash-notice">
+            {{ message }}
+        </div>
+        {% endfor %}
+
         <h1 style="text-align:center;">{{ joke.title }}</h1>
         <div>
             <img src="{{ asset('uploads/jokepost/' ~ joke.img) }}" style="height: 100%; width: auto; max-width: 100%;">
-             <div class="progress">
-              <div class="progress-bar progress-bar-success" role="progressbar" style="width:{{ joke.totalvotes ==  0 ? 0: (joke.upvotes / joke.totalvotes)*100}}%;">
-                {{joke.upvotes}} likes
-              </div>
-              <div class="progress-bar progress-bar-danger" role="progressbar" style="width:{{ joke.totalvotes ==  0 ? 0: (joke.downvotes / joke.totalvotes)*100}}%;">
-                 {{joke.downvotes}} dislikes
+            <div class="progress">
+                <div class="progress-bar progress-bar-success" role="progressbar" style="width:{{ joke.totalvotes ==  0 ? 0: (joke.upvotes / joke.totalvotes)*100}}%;">
+                    {{joke.upvotes}} likes
+                </div>
+                <div class="progress-bar progress-bar-danger" role="progressbar" style="width:{{ joke.totalvotes ==  0 ? 0: (joke.downvotes / joke.totalvotes)*100}}%;">
+                    {{joke.downvotes}} dislikes
                 </div>
             </div>
             <a href="{{ path('jokepost-like', {'id': joke.id }) }}">J'aime</a>
             <a href="{{ path('jokepost-unlike', {'id': joke.id }) }}" style="float:right;">J'aime pas</a>
 
             <div class="row">
-                        {{ form_start(form) }}
-                    <div class="form-group">
-                        {{ form_row(form.content, { 'attr': {'class': 'form-control','placeholder':'Comment'} })}}
-                    </div>
-                    <div class="form-group">
-                        {{ form_row(form.save, { 'attr': {'class': 'btn btn-primary  btn-sm'} })}}
-                    </div>
-                        {{ form_end(form) }}
+                {{ form_start(form) }}
+                <div class="form-group">
+                    {{ form_row(form.content, { 'attr': {'class': 'form-control','placeholder':'Comment'} })}}
+                </div>
+                <div class="form-group">
+                    {{ form_row(form.save, { 'attr': {'class': 'btn btn-primary  btn-sm'} })}}
+                </div>
+                {{ form_end(form) }}
             </div>
 
             {% for comment in joke.comments %}
             <div class="row">
                 <div class="panel panel-info">
-                  <div class="panel-body">
-                    {{ comment.user.username }}
-                  </div>
-                  <div class="panel-footer">{{ comment.content }} </div>
+                    <div class="panel-body">
+                        {{ comment.user.username }}
+                    </div>
+                    <div class="panel-footer">{{ comment.content }} </div>
                 </div>
             </div>
             {% endfor %}
