@@ -1,6 +1,7 @@
-homepage:
+jokepost-list:
     path:   /
     defaults: { _controller: AppBundle:JokePost:list }
+    methods:  [GET]
 
 api-register:
     path:   /api/register
@@ -16,14 +17,9 @@ api-comment:
     defaults: { _controller: AppBundle:Comment:addApi }
     methods: [POST]
 
-jokepost:
+jokepost-add:
     path:   /jokepost/new
     defaults: { _controller: AppBundle:JokePost:new }
-
-jokepost-list:
-    path:   /jokepost/list
-    defaults: { _controller: AppBundle:JokePost:list }
-    methods:  [GET]
 
 jokepost-like:
     path:   /jokepost/like/{id}
@@ -44,7 +40,7 @@ jokepost-one:
         id: '\d+'
 
 api-jokepost-list:
-    path:   /api/jokepost/list
+    path:   /api/jokepost/all
     defaults: { _controller: AppBundle:JokePost:listApi }
 
 api-jokepost-like:
