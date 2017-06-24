@@ -3,22 +3,22 @@
 namespace AppBundle\Entity;
 
 /**
- * Vote
+ * Vote.
  */
 class Vote
 {
     /**
-     * @var integer
+     * @var int
      */
     private $id;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $up;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $down;
 
@@ -32,11 +32,10 @@ class Vote
      */
     private $user;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -44,9 +43,9 @@ class Vote
     }
 
     /**
-     * Set up
+     * Set up.
      *
-     * @param boolean $up
+     * @param bool $up
      *
      * @return Vote
      */
@@ -58,9 +57,9 @@ class Vote
     }
 
     /**
-     * Get up
+     * Get up.
      *
-     * @return boolean
+     * @return bool
      */
     public function getUp()
     {
@@ -68,9 +67,9 @@ class Vote
     }
 
     /**
-     * Set down
+     * Set down.
      *
-     * @param boolean $down
+     * @param bool $down
      *
      * @return Vote
      */
@@ -82,9 +81,9 @@ class Vote
     }
 
     /**
-     * Get down
+     * Get down.
      *
-     * @return boolean
+     * @return bool
      */
     public function getDown()
     {
@@ -92,7 +91,7 @@ class Vote
     }
 
     /**
-     * Set jokepost
+     * Set jokepost.
      *
      * @param \AppBundle\Entity\JokePost $jokepost
      *
@@ -106,7 +105,7 @@ class Vote
     }
 
     /**
-     * Get jokepost
+     * Get jokepost.
      *
      * @return \AppBundle\Entity\JokePost
      */
@@ -116,7 +115,7 @@ class Vote
     }
 
     /**
-     * Set user
+     * Set user.
      *
      * @param \AppBundle\Entity\User $user
      *
@@ -130,7 +129,7 @@ class Vote
     }
 
     /**
-     * Get user
+     * Get user.
      *
      * @return \AppBundle\Entity\User
      */
@@ -138,5 +137,16 @@ class Vote
     {
         return $this->user;
     }
-}
 
+    public function voteUp()
+    {
+        $this->up = true;
+        $this->down = false;
+    }
+
+    public function voteDown()
+    {
+        $this->up = false;
+        $this->down = true;
+    }
+}

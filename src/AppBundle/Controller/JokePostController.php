@@ -37,10 +37,7 @@ class JokePostController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $jokepost = $form->getData();
-            $jokepost->setDate(new \DateTime('NOW'));
-            $jokepost->setUpvotes(0);
-            $jokepost->setDownvotes(0);
-            $jokepost->setTotalvotes(0);
+            $jokepost->setAuthor($this->getUser());
 
             $imgFile = $jokepost->getImg();
             $fileName = md5(uniqid()).'.'.$imgFile->guessExtension();
@@ -103,6 +100,8 @@ class JokePostController extends Controller
             $em->persist($comment);
             $em->flush();
 
+            $this->addFlash('comment', 'Congratulations, your posted a comment!');
+
             return $this->redirectToRoute('jokepost-one', array('id' => $id));
         }
 
@@ -119,26 +118,24 @@ class JokePostController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-        $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
-        $repositoryVote = $this->getDoctrine()->getRepository('AppBundle:Vote');
-        $jokepost = $repository->findOneById($id);
-        $vote = $repositoryVote->findOneBy(['jokepost' => $jokepost, 'user' => $this->getUser()]);
+        $jokepostRepo = $em->getRepository('AppBundle:JokePost');
+        $voteRepo = $em->getRepository('AppBundle:Vote');
+
+        $jokepost = $jokepostRepo->findOneById($id);
+        $vote = $voteRepo->findOneBy(['jokepost' => $jokepost, 'user' => $this->getUser()]);
 
         if (!$vote) {
             $vote = new Vote();
             $vote->setJokepost($jokepost);
             $vote->setUser($this->getUser());
-            $jokepost->setUpvotes($jokepost->getUpvotes() + 1);
-            $jokepost->setTotalvotes($jokepost->getTotalvotes() + 1);
+            $jokepost->voteUp();
         }
 
         if ($vote->getDown()) {
-            $jokepost->setDownvotes($jokepost->getDownvotes() - 1);
-            $jokepost->setUpvotes($jokepost->getUpvotes() + 1);
+            $jokepost->voteDownToUp();
         }
 
-        $vote->setUp(true);
-        $vote->setDown(false);
+        $vote->voteUp();
 
         $em->persist($jokepost);
         $em->persist($vote);
@@ -155,7 +152,7 @@ class JokePostController extends Controller
         $APIKey = $em->getRepository('AppBundle:APIKey')->findOneByHash($receivedData['token']);
 
         if (!$APIKey) {
-            throw new BadCredentialsException();
+            throw new BadCredentialsException("Need the user's token");
         }
 
         $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
@@ -185,21 +182,19 @@ class JokePostController extends Controller
             $vote = new Vote();
             $vote->setJokepost($jokepost);
             $vote->setUser($this->getUser());
-            $jokepost->setTotalvotes($jokepost->getTotalvotes() + 1);
-            $jokepost->setDownvotes($jokepost->getDownvotes() + 1);
+            $jokepost->voteDown();
         }
 
         if ($vote->getUp()) {
-            $jokepost->setUpvotes($jokepost->getUpvotes() - 1);
-            $jokepost->setDownvotes($jokepost->getDownvotes() + 1);
+            $jokepost->voteUpToDown();
         }
 
-        $vote->setDown(true);
-        $vote->setUp(false);
+        $vote->voteDown();
 
         $em->persist($jokepost);
         $em->persist($vote);
         $em->flush();
+
         $this->addFlash('unlike', 'Ooooh, your unliked this post!');
 
         return $this->redirectToRoute('jokepost-one', array('id' => $id));
@@ -212,7 +207,7 @@ class JokePostController extends Controller
         $APIKey = $em->getRepository('AppBundle:APIKey')->findOneByHash($receivedData['token']);
 
         if (!$APIKey) {
-            throw new BadCredentialsException();
+            throw new BadCredentialsException("Need the user's token");
         }
 
         $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');

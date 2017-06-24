@@ -27,7 +27,19 @@ AppBundle\Entity\JokePost:
         comments:
             targetEntity: Comment
             mappedBy: jokepost
+            joinColumn:
+                name: comment_id
+                referencedColumnName: id
         votes:
             targetEntity: Vote
-            mappedBy: vote
+            mappedBy: jokepost
+            joinColumn:
+                name: vote_id
+                referencedColumnName: id
+    manyToOne:
+        author:
+            targetEntity: User
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
     lifecycleCallbacks: {  }

@@ -3,12 +3,12 @@
 namespace AppBundle\Entity;
 
 /**
- * Comment
+ * Comment.
  */
 class Comment
 {
     /**
-     * @var integer
+     * @var int
      */
     private $id;
 
@@ -27,11 +27,10 @@ class Comment
      */
     private $user;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -39,7 +38,7 @@ class Comment
     }
 
     /**
-     * Set content
+     * Set content.
      *
      * @param string $content
      *
@@ -53,7 +52,7 @@ class Comment
     }
 
     /**
-     * Get content
+     * Get content.
      *
      * @return string
      */
@@ -63,7 +62,7 @@ class Comment
     }
 
     /**
-     * Set jokepost
+     * Set jokepost.
      *
      * @param \AppBundle\Entity\JokePost $jokepost
      *
@@ -77,7 +76,7 @@ class Comment
     }
 
     /**
-     * Get jokepost
+     * Get jokepost.
      *
      * @return \AppBundle\Entity\JokePost
      */
@@ -87,7 +86,7 @@ class Comment
     }
 
     /**
-     * Set user
+     * Set user.
      *
      * @param \AppBundle\Entity\User $user
      *
@@ -101,7 +100,7 @@ class Comment
     }
 
     /**
-     * Get user
+     * Get user.
      *
      * @return \AppBundle\Entity\User
      */
@@ -110,4 +109,3 @@ class Comment
         return $this->user;
     }
 }
-

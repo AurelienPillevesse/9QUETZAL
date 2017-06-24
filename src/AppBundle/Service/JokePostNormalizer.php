@@ -33,9 +33,13 @@ class JokePostNormalizer implements NormalizerInterface, NormalizerAwareInterfac
     {
         return [
             'id' => $object->getId(),
+            'author' => $object->getAuthor(),
             'title' => $object->getTitle(),
             'image' => $object->getImg(),
             'date' => $object->getDate()->format('Y-m-d h:i:s'),
+            'upvotes' => $object->getUpvotes(),
+            'downvotes' => $object->getDownvotes(),
+            'totalvotes' => $object->getTotalvotes(),
             'comments' => array_map(
                 function ($object) use ($format, $context) {
                     return $this->normalizer->normalize($object, $format, $context);

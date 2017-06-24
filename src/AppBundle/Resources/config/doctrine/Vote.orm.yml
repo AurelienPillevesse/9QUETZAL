@@ -16,6 +16,7 @@ AppBundle\Entity\Vote:
     manyToOne:
         jokepost:
             targetEntity: JokePost
+            inversedBy: votes
             joinColumn:
                 name: jokepost_id
                 referencedColumnName: id

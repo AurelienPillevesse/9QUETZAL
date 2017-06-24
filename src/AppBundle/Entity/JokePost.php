@@ -3,12 +3,12 @@
 namespace AppBundle\Entity;
 
 /**
- * JokePost
+ * JokePost.
  */
 class JokePost
 {
     /**
-     * @var integer
+     * @var int
      */
     private $id;
 
@@ -18,17 +18,17 @@ class JokePost
     private $title;
 
     /**
-     * @var integer
+     * @var int
      */
     private $upvotes;
 
     /**
-     * @var integer
+     * @var int
      */
     private $downvotes;
 
     /**
-     * @var integer
+     * @var int
      */
     private $totalvotes;
 
@@ -53,18 +53,28 @@ class JokePost
     private $votes;
 
     /**
-     * Constructor
+     * @var \AppBundle\Entity\User
+     */
+    private $author;
+
+    /**
+     * Constructor.
      */
     public function __construct()
     {
         $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
         $this->votes = new \Doctrine\Common\Collections\ArrayCollection();
+
+        $this->date = new \DateTime('NOW');
+        $this->upvotes = 0;
+        $this->downvotes = 0;
+        $this->totalvotes = 0;
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -72,7 +82,7 @@ class JokePost
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @param string $title
      *
@@ -86,7 +96,7 @@ class JokePost
     }
 
     /**
-     * Get title
+     * Get title.
      *
      * @return string
      */
@@ -96,9 +106,9 @@ class JokePost
     }
 
     /**
-     * Set upvotes
+     * Set upvotes.
      *
-     * @param integer $upvotes
+     * @param int $upvotes
      *
      * @return JokePost
      */
@@ -110,9 +120,9 @@ class JokePost
     }
 
     /**
-     * Get upvotes
+     * Get upvotes.
      *
-     * @return integer
+     * @return int
      */
     public function getUpvotes()
     {
@@ -120,9 +130,9 @@ class JokePost
     }
 
     /**
-     * Set downvotes
+     * Set downvotes.
      *
-     * @param integer $downvotes
+     * @param int $downvotes
      *
      * @return JokePost
      */
@@ -134,9 +144,9 @@ class JokePost
     }
 
     /**
-     * Get downvotes
+     * Get downvotes.
      *
-     * @return integer
+     * @return int
      */
     public function getDownvotes()
     {
@@ -144,9 +154,9 @@ class JokePost
     }
 
     /**
-     * Set totalvotes
+     * Set totalvotes.
      *
-     * @param integer $totalvotes
+     * @param int $totalvotes
      *
      * @return JokePost
      */
@@ -158,9 +168,9 @@ class JokePost
     }
 
     /**
-     * Get totalvotes
+     * Get totalvotes.
      *
-     * @return integer
+     * @return int
      */
     public function getTotalvotes()
     {
@@ -168,7 +178,7 @@ class JokePost
     }
 
     /**
-     * Set img
+     * Set img.
      *
      * @param string $img
      *
@@ -182,7 +192,7 @@ class JokePost
     }
 
     /**
-     * Get img
+     * Get img.
      *
      * @return string
      */
@@ -192,7 +202,7 @@ class JokePost
     }
 
     /**
-     * Set date
+     * Set date.
      *
      * @param \DateTime $date
      *
@@ -206,7 +216,7 @@ class JokePost
     }
 
     /**
-     * Get date
+     * Get date.
      *
      * @return \DateTime
      */
@@ -216,7 +226,7 @@ class JokePost
     }
 
     /**
-     * Add comment
+     * Add comment.
      *
      * @param \AppBundle\Entity\Comment $comment
      *
@@ -230,7 +240,7 @@ class JokePost
     }
 
     /**
-     * Remove comment
+     * Remove comment.
      *
      * @param \AppBundle\Entity\Comment $comment
      */
@@ -240,7 +250,7 @@ class JokePost
     }
 
     /**
-     * Get comments
+     * Get comments.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -250,7 +260,7 @@ class JokePost
     }
 
     /**
-     * Add vote
+     * Add vote.
      *
      * @param \AppBundle\Entity\Vote $vote
      *
@@ -264,7 +274,7 @@ class JokePost
     }
 
     /**
-     * Remove vote
+     * Remove vote.
      *
      * @param \AppBundle\Entity\Vote $vote
      */
@@ -274,7 +284,7 @@ class JokePost
     }
 
     /**
-     * Get votes
+     * Get votes.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -282,5 +292,52 @@ class JokePost
     {
         return $this->votes;
     }
-}
 
+    /**
+     * Set author.
+     *
+     * @param \AppBundle\Entity\User $author
+     *
+     * @return JokePost
+     */
+    public function setAuthor(\AppBundle\Entity\User $author = null)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Get author.
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    public function voteUp()
+    {
+        ++$this->upvotes;
+        ++$this->totalvotes;
+    }
+
+    public function voteDown()
+    {
+        ++$this->downvotes;
+        ++$this->totalvotes;
+    }
+
+    public function voteUpToDown()
+    {
+        --$this->upvotes;
+        ++$this->downvotes;
+    }
+
+    public function voteDownToUp()
+    {
+        --$this->downvotes;
+        ++$this->upvotes;
+    }
+}
