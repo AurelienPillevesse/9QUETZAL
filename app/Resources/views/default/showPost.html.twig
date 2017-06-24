@@ -16,7 +16,13 @@
         </div>
         {% endfor %}
 
-        <h1 style="text-align:center;">{{ joke.title }}</h1>
+        {% for message in app.session.flashBag.get('comment') %}
+        <div class="flash-notice">
+            {{ message }}
+        </div>
+        {% endfor %}
+
+        <h1 style="text-align:center;">{{ joke.title }} by {{ joke.author.username }}</h1>
         <div>
             <img src="{{ asset('uploads/jokepost/' ~ joke.img) }}" style="width: 100%; max-width: 100%;">
             <div class="progress">
@@ -27,8 +33,8 @@
                     {{joke.downvotes}} dislikes
                 </div>
             </div>
-            <a href="{{ path('jokepost-like', {'id': joke.id }) }}">J'aime</a>
-            <a href="{{ path('jokepost-unlike', {'id': joke.id }) }}" style="float:right;">J'aime pas</a>
+            <a href="{{ path('jokepost-like', {'id': joke.id }) }}">Like</a>
+            <a href="{{ path('jokepost-unlike', {'id': joke.id }) }}" style="float:right;">Dislike</a>
 
             <div class="row">
                 {{ form_start(form) }}

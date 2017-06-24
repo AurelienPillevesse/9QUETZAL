@@ -1,9 +1,9 @@
 <nav class="navbar navbar-default navbar-static-top navbar-inverse default">
     <div class="container">
-            <a href="/jokepost/list"><img src="https://bower.io/img/bower-logo.svg" class="pull-left" style="height: 60px;"/></a>
+            <a href="{{ path('jokepost-list') }}"><img src="https://bower.io/img/bower-logo.svg" class="pull-left" style="height: 60px;"/></a>
         <ul class="nav navbar-nav">
             <li>
-                <a href="/jokepost/list">9Quetzal</a>
+                <a href="{{ path('jokepost-list') }}">9Quetzal</a>
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -19,8 +19,8 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" style="margin-right: 10px;"></span> {{app.user}}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/jokepost/new">Create Post</a></li>
-                        <li><a href="/jokepost/list">List Posts</a></li>
+                        <li><a href="{{ path('jokepost-add') }}">Create Post</a></li>
+                        <li><a href="{{ path('jokepost-list') }}">List Posts</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="/logout" style="color:red;">Logout</a></li>
                     </ul>
