@@ -1,6 +1,22 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
+<style>
+
+.alert-success {
+    background-color: #00bc8c;
+    border-color: #00bc8c;
+    color: #ffffff;
+    transition: .2s ease-in-out;
+}
+
+.alert-success:hover {
+    transform: scale(1.1);
+}
+
+</style>
+
 <div class="container">
     <div class="row col-md-12">
         <h1><span>Welcome to</span> ListPost</h1>
@@ -10,7 +26,7 @@
         <div class="row col-md-6">
             <div class="row">
                 <h3><a href="/jokepost/{{ joke.id }}">{{ joke.title }}</a></h3>
-                <img src="{{ asset('uploads/jokepost/' ~ joke.img) }}"  style="height: 100%; width: auto; max-width: 100%;">
+                <img src="{{ asset('uploads/jokepost/' ~ joke.img) }}"  style="min-width: 100%; max-height: 100%;">
             </div>
             <div class="row">
                 {{ joke.upvotes }} likes
@@ -18,14 +34,16 @@
             </div>
         </div>
 
-        <div class="row col-md-6">
-                {% for comment in joke.comments %}
-                <div class="row	"  style="overflow:hidden;">
-                    <div class="alert alert-success" role="alert">
-                      <strong>{{ comment.user.username }} say:</strong> {{ comment.content }}
-                    </div>
-                </div>
-                {% endfor %}
+            <div class="row col-md-6" style="margin-top:50px;">
+                  {% set opacity = 1 %}
+                      {% for comment in joke.comments |slice(0,6) %}
+                      <div class="row">
+                          <div class="alert alert-success" role="alert" style="opacity:{{ opacity }};box-shadow: 3px 3px rgba(1,1,1,{{ opacity}}, 2px 2px rgba(1,1,1,{{ opacity}}, 1px 1px rgba(1,1,1,{{ opacity}})">
+                                <strong>{{ comment.user.username }} say:</strong> {{ comment.content }}
+                              </div>
+                          </div>
+                      {% set opacity = opacity - 0.20 %}
+                          {% endfor %}
         </div>
     </div>
     {% else %}
