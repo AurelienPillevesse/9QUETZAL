@@ -140,9 +140,9 @@ class APIKey
 
     public function __construct()
     {
-        $this->setDate(new \DateTime('now'));
-        $this->setLifetime(3600 * 24);
-        $this->setHash(uniqid());
+        $this->date = new \DateTime('now');
+        $this->lifetime = 3600 * 24;
+        $this->hash = uniqid();
     }
 
     public function isValid()
