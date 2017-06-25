@@ -2,47 +2,22 @@
 
 namespace Tests\AppBundle\Controller;
 
-use AppBundle\Controller\JokePostController;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class JokePostControllerTest extends WebTestCase
+class DefaultControllerTest extends WebTestCase
 {
-  public function testLikeAction()
-  {
-      $jokepost = new JokePostController();
-      $result = $jokepost->likeAction();
-      $this->assertEquals(true,$client->getResponse()->isRedirect('/jokepost-one'));
-  }
+    public function testIndex()
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('div.postelement')->count());
+    }
 
-  public function testsetContainer()
-  {
-
-  }
-
-  public function testnewAction()
-  {
-
-  }
-
-  public function testallAction()
-  {
-    $client = static::createClient();
-    $crawler = $client->request('GET', '/');
-    $this->assertGreaterThan(0, $crawler->filter('div.postelement')->count());
-  }
-
-  public function testlistApiAction()
-  {
-
-  }
-
-  public function testoneAction()
-  {
-
-  }
-
-  public function testunlikeAction()
-  {
-
-  }
+    public function testNewJokepostGet()
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/jokepost/new');
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+    }
 }

@@ -6,6 +6,7 @@ jokepost-list:
 api-register:
     path:   /api/register
     defaults: { _controller: AppBundle:User:registerApi }
+    methods: [POST]
 
 api-signin:
     path:   /api/login
@@ -19,6 +20,7 @@ api-comment:
 
 jokepost-add:
     path:   /jokepost/new
+    methods: [GET, POST]
     defaults: { _controller: AppBundle:JokePost:new }
 
 jokepost-like:
@@ -36,6 +38,7 @@ jokepost-unlike:
 jokepost-one:
     path:   /jokepost/{id}
     defaults: { _controller: AppBundle:JokePost:one }
+    methods: [GET, POST]
     requirements:
         id: '\d+'
 
@@ -52,6 +55,7 @@ api-jokepost-one:
 api-jokepost-new:
     path:   /api/jokepost/new
     defaults: { _controller: AppBundle:JokePost:newApi }
+    methods: [POST]
 
 api-jokepost-like:
     path:   /api/jokepost/{id}/like
