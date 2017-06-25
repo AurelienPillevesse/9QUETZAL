@@ -1,6 +1,6 @@
 jokepost-list:
     path:   /
-    defaults: { _controller: AppBundle:JokePost:list }
+    defaults: { _controller: AppBundle:JokePost:all }
     methods:  [GET]
 
 api-register:
