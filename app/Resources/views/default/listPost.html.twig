@@ -22,7 +22,7 @@
         <h1>This is the list of all posts</h1>
     </div>
     {% for joke in jokes %}
-    <div class="row">
+    <div class="row postelement">
         <div class="row col-md-6">
             <div class="row">
                 <h3><a href="{{ path('jokepost-one', {'id': joke.id}) }}">{{ joke.title }} by {{ joke.author.username }}</a></h3>

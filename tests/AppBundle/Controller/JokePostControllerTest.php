@@ -13,4 +13,41 @@ class JokePostControllerTest extends WebTestCase
       $result = $jokepost->likeAction();
       $this->assertEquals(true,$client->getResponse()->isRedirect('/jokepost-one'));
   }
+
+  public function setContainerTest()
+  {
+
+  }
+
+  public function newActionTest()
+  {
+
+  }
+
+  public function allActionTest()
+  {
+    $client = static::createClient();
+    $crawler = $client->request('GET', '/');
+    $this->assertGreaterThan(0, $crawler->filter('div.postelement')->count());
+  }
+
+  public function listApiActionTest()
+  {
+
+  }
+
+  public function oneActionTest()
+  {
+
+  }
+
+  public function likeActionTest()
+  {
+
+  }
+
+  public function unlikeActionTest()
+  {
+
+  }
 }
