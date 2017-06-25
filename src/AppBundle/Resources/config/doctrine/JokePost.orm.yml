@@ -25,6 +25,7 @@ AppBundle\Entity\JokePost:
             type: datetime
     oneToMany:
         comments:
+            orderBy: { 'date': 'DESC' }
             targetEntity: Comment
             mappedBy: jokepost
             joinColumn:
