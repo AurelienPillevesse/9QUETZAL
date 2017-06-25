@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use AppBundle\Entity\APIKey;
 
 /**
- * Comment normalizer.
+ * APIKey normalizer.
  */
 class APIKeyNormalizer implements NormalizerInterface, NormalizerAwareInterface, DenormalizerInterface, DenormalizerAwareInterface
 {
@@ -76,16 +76,13 @@ class APIKeyNormalizer implements NormalizerInterface, NormalizerAwareInterface,
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        /*if (!isset($data['id']) && !isset($data['content'])) {
-            throw new BadRequestHttpException('A comment must contain an id and a content.');
+        if (!isset($data['token'])) {
+            throw new BadRequestHttpException('An api key must contain a token.');
         }
 
-        $comment = new Comment();
-        $comment->setId($data['id']);
-        $comment->setContent($date['content']);
+        $APIKey = new APIKey();
+        $APIKey->setHash($data['token']);
 
-        return $comment;*/
-        var_dump('denormalize APIKEY');
-        die;
+        return $APIKey;
     }
 }
