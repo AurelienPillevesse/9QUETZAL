@@ -68,7 +68,7 @@ class JokePostController extends Controller
         ));
     }
 
-    public function listApiAction(Request $request)
+    public function allApiAction(Request $request)
     {
         $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
         $jokeposts = $repository->findBy(array(), array('date' => 'DESC'));
@@ -109,36 +109,10 @@ class JokePostController extends Controller
         ));
     }
 
-    public function newApiAction(Request $request)
+    public function oneApiAction(Request $request, $id)
     {
-        $key = $this->serializer->deserialize($request->getContent(), APIKey::class, 'json');
-        $em = $this->getDoctrine()->getManager();
-        $APIKey = $em->getRepository('AppBundle:APIKey')->findOneByHash($key->getHash());
-
-        if (!$APIKey) {
-            throw new BadCredentialsException('Need a valid APIKey');
-        }
-
-        if (!$APIKey->isValid()) {
-            throw new BadCredentialsException('Token expired');
-        }
-
-        $user = $APIKey->getUser();
-
-        $jokepost->setAuthor($user);
-
-        /*$imgFile = $jokepost->getImg();
-        $fileName = md5(uniqid()).'.'.$imgFile->guessExtension();
-        $imgFile->move(
-            $this->getParameter('jokepost_directory'),
-            $fileName
-        );
-
-        $jokepost->setImg($fileName);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($jokepost);
-        $em->flush();*/
+        $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
+        $jokepost = $repository->findOneById($id);
 
         return new JsonResponse($this->serializer->serialize($jokepost, 'json'), 200);
     }

@@ -41,7 +41,13 @@ jokepost-one:
 
 api-jokepost-list:
     path:   /api/jokepost/all
-    defaults: { _controller: AppBundle:JokePost:listApi }
+    defaults: { _controller: AppBundle:JokePost:allApi }
+    methods:  [GET]
+
+api-jokepost-one:
+    path:   /api/jokepost/{id}
+    defaults: { _controller: AppBundle:JokePost:oneApi }
+    methods:  [GET]
 
 api-jokepost-new:
     path:   /api/jokepost/new
@@ -60,11 +66,6 @@ api-jokepost-unlike:
     methods:  [POST]
     requirements:
         id: '\d+'
-
-user-list:
-    path:   /user/list
-    defaults: { _controller: AppBundle:User:list }
-    methods:  [GET]
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
