@@ -1,4 +1,4 @@
-9Quetzal
+9Quetzal by Pierre Pic and Aurélien Pillevesse
 ========
 
     docker pull mysql
