@@ -59,10 +59,10 @@ class JokePostController extends Controller
         ));
     }
 
-    public function listAction(Request $request)
+    public function allAction(Request $request)
     {
         $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
-        $jokeposts = $repository->findAll();
+        $jokeposts = $repository->findBy(array(), array('date' => 'DESC'));
 
         return $this->render('default/listPost.html.twig', array(
             'jokes' => $jokeposts,
@@ -72,7 +72,7 @@ class JokePostController extends Controller
     public function listApiAction(Request $request)
     {
         $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
-        $jokeposts = $repository->findAll();
+        $jokeposts = $repository->findBy(array(), array('date' => 'DESC'));
 
         return new JsonResponse($this->serializer->serialize($jokeposts, 'json'), 200);
     }
