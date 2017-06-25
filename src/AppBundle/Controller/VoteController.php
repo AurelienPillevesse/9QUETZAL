@@ -9,6 +9,7 @@ use AppBundle\Entity\JokePost;
 use AppBundle\Entity\Vote;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 class VoteController extends Controller
 {
