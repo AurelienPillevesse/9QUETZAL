@@ -28,6 +28,11 @@ class Comment
     private $user;
 
     /**
+     * @var \DateTime
+     */
+    private $date;
+
+    /**
      * Get id.
      *
      * @return int
@@ -107,5 +112,37 @@ class Comment
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set date.
+     *
+     * @param \DateTime $date
+     *
+     * @return Comment
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date.
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    public function __construct($jokepost = null, $user = null, $content = null)
+    {
+        $this->jokepost = $jokepost;
+        $this->user = $user;
+        $this->content = $content;
+        $this->date = new \DateTime('now');
     }
 }
