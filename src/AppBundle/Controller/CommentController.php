@@ -14,13 +14,22 @@ use Symfony\Component\Serializer\Serializer;
 class CommentController extends Controller
 {
     private $serializer;
-
+    /**
+     * Method that permit to set the instance of the container
+     * @param $container
+     */
     public function setContainer(ContainerInterface $container = null)
     {
         parent::setContainer($container);
         $this->serializer = $this->get('app.serializer.default');
     }
 
+    /**
+     * Add a new controller to a jokepost by the $id
+     * @param $request
+     * @param $id
+     * @return JsonResponse
+     */
     public function newApiAction(Request $request, $id)
     {
         $key = $this->serializer->deserialize($request->getContent(), APIKey::class, 'json');

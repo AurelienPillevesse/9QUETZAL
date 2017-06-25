@@ -15,12 +15,21 @@ class APIKeyController extends Controller
 {
     private $serializer;
 
+    /**
+     * Method that permit to set the instance of the container
+     * @param $container
+     */
     public function setContainer(ContainerInterface $container = null)
     {
         parent::setContainer($container);
         $this->serializer = $this->get('app.serializer.default');
     }
 
+    /**
+     * Method that permit to login directly by the API
+     * @param $request
+     * @return JsonResponse
+     */
     public function loginApiAction(Request $request)
     {
         $credentials = $this->serializer->deserialize($request->getContent(), Credentials::class, 'json');

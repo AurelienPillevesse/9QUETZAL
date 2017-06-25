@@ -15,13 +15,22 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class JokePostController extends Controller
 {
     private $serializer;
-
+    /**
+     * Method that permit to set the instance of the container
+     * @param $container
+     */
     public function setContainer(ContainerInterface $container = null)
     {
         parent::setContainer($container);
         $this->serializer = $this->get('app.serializer.default');
     }
 
+    /**
+     * Create new JokePost
+     * @param $request
+     * @param $id
+     * @return JsonResponse
+     */
     public function newAction(Request $request)
     {
         if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -58,6 +67,11 @@ class JokePostController extends Controller
         ));
     }
 
+    /**
+     *  Get all the post
+     * @param $request
+     * @return Twig render
+     */
     public function allAction(Request $request)
     {
         $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
@@ -68,6 +82,11 @@ class JokePostController extends Controller
         ));
     }
 
+    /**
+     *  Get all the post directly by the API
+     * @param $request
+     * @return JsonResponse
+     */
     public function allApiAction(Request $request)
     {
         $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
@@ -76,6 +95,12 @@ class JokePostController extends Controller
         return new JsonResponse($this->serializer->serialize($jokeposts, 'json'), 200);
     }
 
+    /**
+     *  Get on JokePost by the id
+     * @param $request
+     * @param $id
+     * @return Twig render
+     */
     public function oneAction(Request $request, $id)
     {
         $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
@@ -109,6 +134,12 @@ class JokePostController extends Controller
         ));
     }
 
+    /**
+    *  Get on JokePost by the id with the API
+    * @param $request
+    * @param $id
+    * @return JsonResponse
+    */
     public function oneApiAction(Request $request, $id)
     {
         $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');

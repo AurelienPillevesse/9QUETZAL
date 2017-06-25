@@ -15,13 +15,20 @@ use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 class VoteController extends Controller
 {
     private $serializer;
-
+    /**
+     * Method that permit to set the instance of the container
+     * @param $container
+     */
     public function setContainer(ContainerInterface $container = null)
     {
         parent::setContainer($container);
         $this->serializer = $this->get('app.serializer.default');
     }
-
+    /**
+     *  Function that permit to like a JokePost
+     * @param $id Id of a JokePost
+     * @return Twig render
+     */
     public function likeAction(Request $request, $id)
     {
         if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -56,6 +63,11 @@ class VoteController extends Controller
         return $this->redirectToRoute('jokepost-one', array('id' => $id));
     }
 
+    /**
+     *  Function that permit to unlike a JokePost
+     * @param $id Id of a JokePost
+     * @return Twig render
+     */
     public function unlikeAction($id)
     {
         if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -90,6 +102,12 @@ class VoteController extends Controller
         return $this->redirectToRoute('jokepost-one', array('id' => $id));
     }
 
+    /**
+      * Method that like a Vote via the API
+      * @param $request
+      * @param $id
+      * @return JsonResponse
+    */
     public function likeApiAction(Request $request, $id)
     {
         $key = $this->serializer->deserialize($request->getContent(), APIKey::class, 'json');
@@ -129,7 +147,12 @@ class VoteController extends Controller
 
         return new JsonResponse($this->serializer->serialize($jokepost, 'json'), 200);
     }
-
+    /**
+      * Method that permit to unlike a post a Vote via the API
+      * @param $request
+      * @param $id
+      * @return JsonResponse
+    */
     public function unlikeApiAction(Request $request, $id)
     {
         $key = $this->serializer->deserialize($request->getContent(), APIKey::class, 'json');
