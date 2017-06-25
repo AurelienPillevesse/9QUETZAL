@@ -41,3 +41,53 @@ If you come back on the project another time after the docker run and you didn't
 - Plus facile pour mettre en une connexion sur le site
 - Grande communauté et documentation
 - Pre-template ( redefinis )
+
+### Routes
+
+
+Route par defaut
+>`/`
+
+Register via the API
+>`/api/register`
+
+Login via the api
+>`/api/login`
+
+Commenter un JokePost avec l'API
+>`/api/jokepost/{id}/comment`
+
+Creer un nouveau JokePost
+>`/jokepost/new`
+
+Liker un Post
+
+$id ⇒ Id du post
+>`/jokepost/{id}/like`
+
+
+Unliker un JokePost
+
+$id ⇒ Id du post
+>`/jokepost/{id}/unlike`
+
+
+Consulter
+
+$id ⇒ Id du post
+>`/jokepost/{id}`
+
+Récuperer la list de tout les JokePost en JSON via l'API
+>`/api/jokepost/all`
+
+Recuperer un JOkePost en JSON via l'API
+>`/api/jokepost/{id}`
+
+Creer un nouveau JokePost en JSON via l'API
+>`/api/jokepost/new`
+
+Liker un JokePost en JSON via l'API
+>`/api/jokepost/{id}/like`
+
+Unliker un JokePost en JSON via l'API
+>`/api/jokepost/{id}/unlike`
