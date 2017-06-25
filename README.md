@@ -227,7 +227,7 @@ Response:
 ```
 
 #### Unlike one post
-URL: POST /api/jokepost/1/unlike
+URL: POST /api/jokepost/{id}/unlike
 
 Content:
 ```json
