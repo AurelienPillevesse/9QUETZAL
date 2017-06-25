@@ -7,30 +7,46 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\APIKey;
 use AppBundle\Entity\Comment;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CommentController extends Controller
 {
-    public function addApiAction(Request $request, $idJokePost)
+    private $serializer;
+
+    public function setContainer(ContainerInterface $container = null)
+    {
+        parent::setContainer($container);
+        $this->serializer = $this->get('app.serializer.default');
+    }
+
+    public function newApiAction(Request $request, $id)
     {
         $receivedData = json_decode($request->getContent(), true);
         $em = $this->getDoctrine()->getManager();
         $APIKey = $em->getRepository('AppBundle:APIKey')->findOneByHash($receivedData['token']);
 
         if (!$APIKey) {
-            throw new BadCredentialsException("Need the user's token");
+            throw new BadCredentialsException('Need a valid APIKey');
         }
 
-        $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
-        $jokepost = $repository->findOneById($idJokePost);
+        if (!$APIKey->isValid()) {
+            throw new BadCredentialsException('Token expired');
+        }
 
-        $comment = new Comment();
-        $comment->setJokepost($jokepost);
-        $comment->setUser($this->getUser());
+        $user = $APIKey->getUser();
+        $jokepostRepo = $em->getRepository('AppBundle:JokePost');
+        $jokepost = $jokepostRepo->findOneById($id);
 
-        $em = $this->getDoctrine()->getManager();
+        if (!$jokepost) {
+            //jokepost doesn't exist
+        }
+
+        $comment = new Comment($jokepost, $user, $receivedData['content']);
+
         $em->persist($comment);
         $em->flush();
 
-        return new JsonResponse($this->serializer->serialize($jokepost, 'json'), 200);
+        return new JsonResponse($this->serializer->serialize($comment, 'json'), 200);
     }
 }
