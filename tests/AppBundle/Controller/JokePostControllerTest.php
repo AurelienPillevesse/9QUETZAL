@@ -7,7 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class JokePostControllerTest extends WebTestCase
 {
-<<<<<<< HEAD
   public function testLikeAction()
   {
       $jokepost = new JokePostController();
@@ -51,12 +50,4 @@ class JokePostControllerTest extends WebTestCase
   {
 
   }
-=======
-    public function testLikeAction()
-    {
-        $jokepost = new JokePostController();
-        $result = $jokepost->likeAction();
-        $this->assertEquals(true, $client->getResponse()->isRedirect('/jokepost-one'));
-    }
->>>>>>> d885bef8b2398d79c1827b2319ce2d64bc19f5d6
 }
