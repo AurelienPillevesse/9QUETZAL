@@ -13,7 +13,7 @@ api-signin:
     methods: [POST]
 
 api-comment:
-    path:   /api/jokepost/comment/{id}
+    path:   /api/jokepost/{id}/comment
     defaults: { _controller: AppBundle:Comment:newApi }
     methods: [POST]
 
@@ -22,14 +22,14 @@ jokepost-add:
     defaults: { _controller: AppBundle:JokePost:new }
 
 jokepost-like:
-    path:   /jokepost/like/{id}
-    defaults: { _controller: AppBundle:JokePost:like }
+    path:   /jokepost/{id}/like
+    defaults: { _controller: AppBundle:Vote:like }
     requirements:
         id: '\d+'
 
 jokepost-unlike:
-    path:   /jokepost/unlike/{id}
-    defaults: { _controller: AppBundle:JokePost:unlike }
+    path:   /jokepost/{id}/unlike
+    defaults: { _controller: AppBundle:Vote:unlike }
     requirements:
         id: '\d+'
 
@@ -43,15 +43,19 @@ api-jokepost-list:
     path:   /api/jokepost/all
     defaults: { _controller: AppBundle:JokePost:listApi }
 
+api-jokepost-new:
+    path:   /api/jokepost/new
+    defaults: { _controller: AppBundle:JokePost:newApi }
+
 api-jokepost-like:
-    path:   /api/jokepost/like/{id}
+    path:   /api/jokepost/{id}/like
     defaults: { _controller: AppBundle:Vote:likeApi }
     methods:  [POST]
     requirements:
         id: '\d+'
 
 api-jokepost-unlike:
-    path:   /api/jokepost/unlike/{id}
+    path:   /api/jokepost/{id}/unlike
     defaults: { _controller: AppBundle:Vote:unlikeApi }
     methods:  [POST]
     requirements:

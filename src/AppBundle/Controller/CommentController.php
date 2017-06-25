@@ -9,6 +9,7 @@ use AppBundle\Entity\Comment;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Serializer\Serializer;
 
 class CommentController extends Controller
 {
@@ -22,9 +23,11 @@ class CommentController extends Controller
 
     public function newApiAction(Request $request, $id)
     {
-        $receivedData = json_decode($request->getContent(), true);
+        $key = $this->serializer->deserialize($request->getContent(), APIKey::class, 'json');
+        $comment = $this->serializer->deserialize($request->getContent(), Comment::class, 'json');
+
         $em = $this->getDoctrine()->getManager();
-        $APIKey = $em->getRepository('AppBundle:APIKey')->findOneByHash($receivedData['token']);
+        $APIKey = $em->getRepository('AppBundle:APIKey')->findOneByHash($key->getHash());
 
         if (!$APIKey) {
             throw new BadCredentialsException('Need a valid APIKey');
@@ -42,7 +45,8 @@ class CommentController extends Controller
             //jokepost doesn't exist
         }
 
-        $comment = new Comment($jokepost, $user, $receivedData['content']);
+        $comment->setUser($user);
+        $comment->setJokepost($jokepost);
 
         $em->persist($comment);
         $em->flush();

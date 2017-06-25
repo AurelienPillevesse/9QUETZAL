@@ -73,7 +73,7 @@ class JokePostNormalizer implements NormalizerInterface, NormalizerAwareInterfac
      */
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return $type === User::class;
+        return $type === JokePost::class;
     }
 
     /**
@@ -88,18 +88,14 @@ class JokePostNormalizer implements NormalizerInterface, NormalizerAwareInterfac
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        /*if (!isset($data['title']) && !isset($data['img']) && !isset($data['date'])) {
-            throw new BadRequestHttpException('A jokepost must contain a title, an image and a date.');
+        if (!isset($data['title']) && !isset($data['img'])) {
+            throw new BadRequestHttpException('A jokepost must contain a title and an image.');
         }
 
         $jokepost = new JokePost();
-        $jokepost->setId($data['id']);
         $jokepost->setTitle($data['title']);
         $jokepost->setImg($date['img']);
-        $jokepost->setDate($data['date']);
 
-        return $jokepost;*/
-        var_dump('denormalize Jokepost');
-        die;
+        return $jokepost;
     }
 }

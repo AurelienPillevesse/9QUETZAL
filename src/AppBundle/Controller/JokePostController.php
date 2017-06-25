@@ -9,7 +9,6 @@ use AppBundle\Form\JokePostType;
 use AppBundle\Form\CommentType;
 use AppBundle\Entity\JokePost;
 use AppBundle\Entity\Comment;
-use AppBundle\Entity\Vote;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -110,71 +109,37 @@ class JokePostController extends Controller
         ));
     }
 
-    public function likeAction(Request $request, $id)
+    public function newApiAction(Request $request)
     {
-        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            throw $this->createAccessDeniedException();
+        $key = $this->serializer->deserialize($request->getContent(), APIKey::class, 'json');
+        $em = $this->getDoctrine()->getManager();
+        $APIKey = $em->getRepository('AppBundle:APIKey')->findOneByHash($key->getHash());
+
+        if (!$APIKey) {
+            throw new BadCredentialsException('Need a valid APIKey');
         }
+
+        if (!$APIKey->isValid()) {
+            throw new BadCredentialsException('Token expired');
+        }
+
+        $user = $APIKey->getUser();
+
+        $jokepost->setAuthor($user);
+
+        /*$imgFile = $jokepost->getImg();
+        $fileName = md5(uniqid()).'.'.$imgFile->guessExtension();
+        $imgFile->move(
+            $this->getParameter('jokepost_directory'),
+            $fileName
+        );
+
+        $jokepost->setImg($fileName);
 
         $em = $this->getDoctrine()->getManager();
-        $jokepostRepo = $em->getRepository('AppBundle:JokePost');
-        $voteRepo = $em->getRepository('AppBundle:Vote');
-
-        $jokepost = $jokepostRepo->findOneById($id);
-        $vote = $voteRepo->findOneBy(['jokepost' => $jokepost, 'user' => $this->getUser()]);
-
-        if (!$vote) {
-            $vote = new Vote();
-            $vote->setJokepost($jokepost);
-            $vote->setUser($this->getUser());
-            $jokepost->voteUp();
-        }
-
-        if ($vote->getDown()) {
-            $jokepost->voteDownToUp();
-        }
-
-        $vote->voteUp();
-
         $em->persist($jokepost);
-        $em->persist($vote);
-        $em->flush();
-        $this->addFlash('like', 'Congratulations, your liked this post!');
+        $em->flush();*/
 
-        return $this->redirectToRoute('jokepost-one', array('id' => $id));
-    }
-
-    public function unlikeAction($id)
-    {
-        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            throw $this->createAccessDeniedException();
-        }
-
-        $em = $this->getDoctrine()->getManager();
-        $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
-        $repositoryVote = $this->getDoctrine()->getRepository('AppBundle:Vote');
-        $jokepost = $repository->findOneById($id);
-        $vote = $repositoryVote->findOneBy(['jokepost' => $jokepost, 'user' => $this->getUser()]);
-
-        if (!$vote) {
-            $vote = new Vote();
-            $vote->setJokepost($jokepost);
-            $vote->setUser($this->getUser());
-            $jokepost->voteDown();
-        }
-
-        if ($vote->getUp()) {
-            $jokepost->voteUpToDown();
-        }
-
-        $vote->voteDown();
-
-        $em->persist($jokepost);
-        $em->persist($vote);
-        $em->flush();
-
-        $this->addFlash('unlike', 'Ooooh, your unliked this post!');
-
-        return $this->redirectToRoute('jokepost-one', array('id' => $id));
+        return new JsonResponse($this->serializer->serialize($jokepost, 'json'), 200);
     }
 }

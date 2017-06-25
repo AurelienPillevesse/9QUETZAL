@@ -10,12 +10,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\scalar;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use AppBundle\Entity\User;
+use AppBundle\Entity\Credentials;
 
 /**
- * User normalizer.
+ * Credentials normalizer.
  */
-class UserNormalizer implements NormalizerInterface, NormalizerAwareInterface, DenormalizerInterface, DenormalizerAwareInterface
+class CredentialsNormalizer implements NormalizerInterface, NormalizerAwareInterface, DenormalizerInterface, DenormalizerAwareInterface
 {
     use NormalizerAwareTrait;
     use DenormalizerAwareTrait;
@@ -32,7 +32,6 @@ class UserNormalizer implements NormalizerInterface, NormalizerAwareInterface, D
     public function normalize($object, $format = null, array $context = array())
     {
         return [
-            'id' => $object->getId(),
             'username' => $object->getUsername(),
         ];
     }
@@ -47,7 +46,7 @@ class UserNormalizer implements NormalizerInterface, NormalizerAwareInterface, D
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof User;
+        return $data instanceof Credentials;
     }
 
     /**
@@ -61,7 +60,7 @@ class UserNormalizer implements NormalizerInterface, NormalizerAwareInterface, D
      */
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return $type === User::class;
+        return $type === Credentials::class;
     }
 
     /**
@@ -76,16 +75,14 @@ class UserNormalizer implements NormalizerInterface, NormalizerAwareInterface, D
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        if (!isset($data['username']) || !isset($data['email']) || !isset($data['password'])) {
-            throw new BadRequestHttpException('A user must contain an username, an email and a password.');
+        if (!isset($data['username']) || !isset($data['password'])) {
+            throw new BadRequestHttpException('Credentials must contain an username and a password.');
         }
 
-        $user = new User();
-        $user->setEnabled(true);
-        $user->setUsername($data['username']);
-        $user->setEmail($data['email']);
-        $user->setPlainPassword($data['password']);
+        $credentials = new Credentials();
+        $credentials->setUsername($data['username']);
+        $credentials->setPassword($data['password']);
 
-        return $user;
+        return $credentials;
     }
 }

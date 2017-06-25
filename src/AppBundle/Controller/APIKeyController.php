@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Form\CredentialsType;
 use AppBundle\Entity\Credentials;
 use AppBundle\Entity\APIKey;
 use Symfony\Component\Serializer\Serializer;
@@ -24,18 +23,7 @@ class APIKeyController extends Controller
 
     public function loginApiAction(Request $request)
     {
-        $receivedCredentials = json_decode($request->getContent(), true);
-        $credentials = new Credentials();
-        $form = $this->createForm(CredentialsType::class, $credentials);
-        $form->submit($receivedCredentials);
-
-        if (!$receivedCredentials['username']) {
-            throw new BadCredentialsException('No username field in request');
-        }
-        if (!$receivedCredentials['password']) {
-            throw new BadCredentialsException('No password field in request');
-        }
-
+        $credentials = $this->serializer->deserialize($request->getContent(), Credentials::class, 'json');
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AppBundle:User')->findOneByUsername($credentials->getUsername());
 

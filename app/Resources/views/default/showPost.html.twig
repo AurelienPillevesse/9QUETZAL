@@ -25,6 +25,8 @@
         <h1 style="text-align:center;">{{ joke.title }} by {{ joke.author.username }}</h1>
         <div>
             <img src="{{ asset('uploads/jokepost/' ~ joke.img) }}" style="width: 100%; max-width: 100%;">
+
+            {% if joke.totalvotes != 0 %}
             <div class="progress">
                 <div class="progress-bar progress-bar-success" role="progressbar" style="width:{{ joke.totalvotes ==  0 ? 0: (joke.upvotes / joke.totalvotes)*100}}%;">
                     {{joke.upvotes}} likes
@@ -33,6 +35,8 @@
                     {{joke.downvotes}} dislikes
                 </div>
             </div>
+            {% endif %}
+            
             <a href="{{ path('jokepost-like', {'id': joke.id }) }}">Like</a>
             <a href="{{ path('jokepost-unlike', {'id': joke.id }) }}" style="float:right;">Dislike</a>
 

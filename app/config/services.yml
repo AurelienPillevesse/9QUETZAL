@@ -10,6 +10,9 @@ services:
     app.encoder.json:
         class: 'Symfony\Component\Serializer\Encoder\JsonEncoder'
 
+    app.normalizer.credentials:
+        class: 'AppBundle\Service\CredentialsNormalizer'
+
     app.normalizer.apikey:
         class: 'AppBundle\Service\APIKeyNormalizer'
 
@@ -26,6 +29,7 @@ services:
         class: 'Symfony\Component\Serializer\Serializer'
         arguments:
             0:
+                - '@app.normalizer.credentials'
                 - '@app.normalizer.apikey'
                 - '@app.normalizer.user'
                 - '@app.normalizer.jokepost'
