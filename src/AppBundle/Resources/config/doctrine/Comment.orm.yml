@@ -11,6 +11,8 @@ AppBundle\Entity\Comment:
     fields:
         content:
             type: text
+        date:
+            type: datetime
     manyToOne:
         jokepost:
             targetEntity: JokePost
