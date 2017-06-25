@@ -61,10 +61,5 @@ api-jokepost-unlike:
     requirements:
         id: '\d+'
 
-user-list:
-    path:   /user/list
-    defaults: { _controller: AppBundle:User:list }
-    methods:  [GET]
-
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
