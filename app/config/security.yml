@@ -15,6 +15,9 @@ security:
             memory: ~
 
     firewalls:
+        api:
+            pattern: ^/api
+            security: false
         main:
             pattern: ^/
             form_login:

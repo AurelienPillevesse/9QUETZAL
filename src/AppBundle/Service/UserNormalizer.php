@@ -76,7 +76,7 @@ class UserNormalizer implements NormalizerInterface, NormalizerAwareInterface, D
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        if (!isset($data['username'])) {
+        /*if (!isset($data['username'])) {
             throw new BadRequestHttpException('A user must contain an username.');
         }
 
@@ -84,6 +84,8 @@ class UserNormalizer implements NormalizerInterface, NormalizerAwareInterface, D
         $user->setId($data['id']);
         $user->setUsername($data['username']);
 
-        return $user;
+        return $user;*/
+        var_dump('denormalize User');
+        die;
     }
 }

@@ -145,8 +145,13 @@ class APIKey
         $this->setHash(uniqid());
     }
 
-    public function verify($APIKey)
+    public function isValid()
     {
+        $tmpDate = $this->date;
+        if ($tmpDate->modify('+'.$this->lifetime.' seconds') < new \DateTime('now')) {
+            return false;
+        }
+
         return true;
     }
 }

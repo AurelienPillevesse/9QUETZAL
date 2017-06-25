@@ -77,7 +77,7 @@ class CommentNormalizer implements NormalizerInterface, NormalizerAwareInterface
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        if (!isset($data['id']) && !isset($data['content'])) {
+        /*if (!isset($data['id']) && !isset($data['content'])) {
             throw new BadRequestHttpException('A comment must contain an id and a content.');
         }
 
@@ -85,6 +85,8 @@ class CommentNormalizer implements NormalizerInterface, NormalizerAwareInterface
         $comment->setId($data['id']);
         $comment->setContent($date['content']);
 
-        return $comment;
+        return $comment;*/
+        var_dump('denormalize Comment');
+        die;
     }
 }

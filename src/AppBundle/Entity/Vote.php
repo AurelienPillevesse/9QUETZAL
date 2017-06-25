@@ -149,4 +149,10 @@ class Vote
         $this->up = false;
         $this->down = true;
     }
+
+    public function __construct($jokepost, $user)
+    {
+        $this->jokepost = $jokepost;
+        $this->user = $user;
+    }
 }

@@ -9,12 +9,19 @@ use AppBundle\Form\CredentialsType;
 use AppBundle\Entity\Credentials;
 use AppBundle\Entity\APIKey;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class APIKeyController extends Controller
 {
+    private $serializer;
+
+    public function setContainer(ContainerInterface $container = null)
+    {
+        parent::setContainer($container);
+        $this->serializer = $this->get('app.serializer.default');
+    }
+
     public function loginApiAction(Request $request)
     {
         $receivedCredentials = json_decode($request->getContent(), true);
@@ -39,31 +46,24 @@ class APIKeyController extends Controller
         $encoder = $this->get('security.password_encoder');
         $isPasswordValid = $encoder->isPasswordValid($user, $credentials->getPassword());
 
-        if ($isPasswordValid) {
-            $APIKeyUser = new APIKey();
-            $APIKeyUser->setUser($user);
-
-            $em->persist($APIKeyUser);
-
-            $AllAPIKeys = $em->getRepository('AppBundle:APIKey')->findByUser($user);
-            foreach ($AllAPIKeys as $key) {
-                $key->setLifetime(0);
-                $em->persist($key);
-            }
-            $em->flush();
-
-            $encoders = new JsonEncoder();
-            $normalizers = new ObjectNormalizer();
-
-            $normalizers->setCircularReferenceHandler(function ($object) {
-                return $object->getId();
-            });
-
-            $serializer = new Serializer(array($normalizers), array($encoders));
-            $jsonContent = $serializer->serialize($APIKeyUser, 'json');
-
-            return new JsonResponse($jsonContent);
+        if (!$isPasswordValid) {
+            throw new BadCredentialsException();
         }
-        throw new BadCredentialsException();
+
+        $APIKeyUser = new APIKey();
+        $APIKeyUser->setUser($user);
+
+        $em->persist($APIKeyUser);
+
+        $AllAPIKeys = $em->getRepository('AppBundle:APIKey')->findByUser($user);
+
+        foreach ($AllAPIKeys as $key) {
+            $key->setLifetime(0);
+            $em->persist($key);
+        }
+
+        $em->flush();
+
+        return new JsonResponse($this->serializer->serialize($APIKeyUser, 'json'), 200);
     }
 }

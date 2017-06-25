@@ -10,12 +10,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\scalar;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use AppBundle\Entity\JokePost;
+use AppBundle\Entity\APIKey;
 
 /**
- * JokePost normalizer.
+ * Comment normalizer.
  */
-class JokePostNormalizer implements NormalizerInterface, NormalizerAwareInterface, DenormalizerInterface, DenormalizerAwareInterface
+class APIKeyNormalizer implements NormalizerInterface, NormalizerAwareInterface, DenormalizerInterface, DenormalizerAwareInterface
 {
     use NormalizerAwareTrait;
     use DenormalizerAwareTrait;
@@ -32,20 +32,8 @@ class JokePostNormalizer implements NormalizerInterface, NormalizerAwareInterfac
     public function normalize($object, $format = null, array $context = array())
     {
         return [
-            'id' => $object->getId(),
-            'author' => $this->normalizer->normalize($object->getAuthor(), $format, $context),
-            'title' => $object->getTitle(),
-            'image' => $object->getImg(),
-            'date' => $object->getDate()->format('Y-m-d h:i:s'),
-            'upvotes' => $object->getUpvotes(),
-            'downvotes' => $object->getDownvotes(),
-            'totalvotes' => $object->getTotalvotes(),
-            'comments' => array_map(
-                function ($object) use ($format, $context) {
-                    return $this->normalizer->normalize($object, $format, $context);
-                },
-                $object->getComments()->toArray()
-            ),
+            'user' => $this->normalizer->normalize($object->getUser(), $format, $context),
+            'hash' => $object->getHash(),
         ];
     }
 
@@ -59,7 +47,7 @@ class JokePostNormalizer implements NormalizerInterface, NormalizerAwareInterfac
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof JokePost;
+        return $data instanceof APIKey;
     }
 
     /**
@@ -73,7 +61,7 @@ class JokePostNormalizer implements NormalizerInterface, NormalizerAwareInterfac
      */
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return $type === User::class;
+        return $type === APIKey::class;
     }
 
     /**
@@ -88,18 +76,16 @@ class JokePostNormalizer implements NormalizerInterface, NormalizerAwareInterfac
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        /*if (!isset($data['title']) && !isset($data['img']) && !isset($data['date'])) {
-            throw new BadRequestHttpException('A jokepost must contain a title, an image and a date.');
+        /*if (!isset($data['id']) && !isset($data['content'])) {
+            throw new BadRequestHttpException('A comment must contain an id and a content.');
         }
 
-        $jokepost = new JokePost();
-        $jokepost->setId($data['id']);
-        $jokepost->setTitle($data['title']);
-        $jokepost->setImg($date['img']);
-        $jokepost->setDate($data['date']);
+        $comment = new Comment();
+        $comment->setId($data['id']);
+        $comment->setContent($date['content']);
 
-        return $jokepost;*/
-        var_dump('denormalize Jokepost');
+        return $comment;*/
+        var_dump('denormalize APIKEY');
         die;
     }
 }

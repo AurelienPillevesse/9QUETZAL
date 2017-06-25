@@ -45,14 +45,14 @@ api-jokepost-list:
 
 api-jokepost-like:
     path:   /api/jokepost/like/{id}
-    defaults: { _controller: AppBundle:JokePost:likeApi }
+    defaults: { _controller: AppBundle:Vote:likeApi }
     methods:  [POST]
     requirements:
         id: '\d+'
 
 api-jokepost-unlike:
     path:   /api/jokepost/unlike/{id}
-    defaults: { _controller: AppBundle:JokePost:unlikeApi }
+    defaults: { _controller: AppBundle:Vote:unlikeApi }
     methods:  [POST]
     requirements:
         id: '\d+'
