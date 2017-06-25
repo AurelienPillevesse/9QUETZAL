@@ -15,8 +15,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class JokePostController extends Controller
 {
     private $serializer;
+
     /**
-     * Method that permit to set the instance of the container
+     * Method that permit to set the instance of the container.
+     *
      * @param $container
      */
     public function setContainer(ContainerInterface $container = null)
@@ -26,9 +28,11 @@ class JokePostController extends Controller
     }
 
     /**
-     * Create new JokePost
+     * Create new JokePost.
+     *
      * @param $request
      * @param $id
+     *
      * @return JsonResponse
      */
     public function newAction(Request $request)
@@ -68,8 +72,10 @@ class JokePostController extends Controller
     }
 
     /**
-     *  Get all the post
+     *  Get all the post.
+     *
      * @param $request
+     *
      * @return Twig render
      */
     public function allAction(Request $request)
@@ -83,8 +89,10 @@ class JokePostController extends Controller
     }
 
     /**
-     *  Get all the post directly by the API
+     *  Get all the post directly by the API.
+     *
      * @param $request
+     *
      * @return JsonResponse
      */
     public function allApiAction(Request $request)
@@ -96,15 +104,21 @@ class JokePostController extends Controller
     }
 
     /**
-     *  Get on JokePost by the id
+     *  Get on JokePost by the id.
+     *
      * @param $request
      * @param $id
+     *
      * @return Twig render
      */
     public function oneAction(Request $request, $id)
     {
         $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
         $jokepost = $repository->findOneById($id);
+
+        if (!$jokepost) {
+            throw $this->createNotFoundException('This jokepost does not exist');
+        }
 
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
@@ -135,15 +149,21 @@ class JokePostController extends Controller
     }
 
     /**
-    *  Get on JokePost by the id with the API
-    * @param $request
-    * @param $id
-    * @return JsonResponse
-    */
+     *  Get on JokePost by the id with the API.
+     *
+     * @param $request
+     * @param $id
+     *
+     * @return JsonResponse
+     */
     public function oneApiAction(Request $request, $id)
     {
         $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
         $jokepost = $repository->findOneById($id);
+
+        if (!$jokepost) {
+            return new JsonResponse(['message' => 'This jokepost does not exist'], 404);
+        }
 
         return new JsonResponse($this->serializer->serialize($jokepost, 'json'), 200);
     }

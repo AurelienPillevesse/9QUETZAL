@@ -14,8 +14,10 @@ use Symfony\Component\Serializer\Serializer;
 class CommentController extends Controller
 {
     private $serializer;
+
     /**
-     * Method that permit to set the instance of the container
+     * Method that permit to set the instance of the container.
+     *
      * @param $container
      */
     public function setContainer(ContainerInterface $container = null)
@@ -25,9 +27,11 @@ class CommentController extends Controller
     }
 
     /**
-     * Add a new controller to a jokepost by the $id
+     * Add a new controller to a jokepost by the $id.
+     *
      * @param $request
      * @param $id
+     *
      * @return JsonResponse
      */
     public function newApiAction(Request $request, $id)
@@ -51,7 +55,7 @@ class CommentController extends Controller
         $jokepost = $jokepostRepo->findOneById($id);
 
         if (!$jokepost) {
-            //jokepost doesn't exist
+            return new JsonResponse(['message' => 'This jokepost does not exist'], 404);
         }
 
         $comment->setUser($user);

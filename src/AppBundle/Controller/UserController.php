@@ -12,8 +12,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class UserController extends Controller
 {
     private $serializer;
+
     /**
-     * Method that permit to set the instance of the container
+     * Method that permit to set the instance of the container.
+     *
      * @param $container
      */
     public function setContainer(ContainerInterface $container = null)
@@ -23,25 +25,12 @@ class UserController extends Controller
     }
 
     /**
-      * Method that list all User (unused)
-      * @param $request
-      * @return Render twig
-    */
-    public function listAction(Request $request)
-    {
-        $repository = $this->getDoctrine()->getRepository('AppBundle:User');
-        $users = $repository->findAll();
-
-        return $this->render('default/listUser.html.twig', array(
-            'users' => $users,
-            ));
-    }
-
-    /**
-      * Method that register an User via the API
-      * @param $request
-      * @return JsonResponse
-    */
+     * Method that register an User via the API.
+     *
+     * @param $request
+     *
+     * @return JsonResponse
+     */
     public function registerApiAction(Request $request)
     {
         $user = $this->serializer->deserialize($request->getContent(), User::class, 'json');

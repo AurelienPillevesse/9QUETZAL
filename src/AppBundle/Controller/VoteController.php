@@ -15,8 +15,10 @@ use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 class VoteController extends Controller
 {
     private $serializer;
+
     /**
-     * Method that permit to set the instance of the container
+     * Method that permit to set the instance of the container.
+     *
      * @param $container
      */
     public function setContainer(ContainerInterface $container = null)
@@ -24,9 +26,12 @@ class VoteController extends Controller
         parent::setContainer($container);
         $this->serializer = $this->get('app.serializer.default');
     }
+
     /**
-     *  Function that permit to like a JokePost
+     *  Function that permit to like a JokePost.
+     *
      * @param $id Id of a JokePost
+     *
      * @return Twig render
      */
     public function likeAction(Request $request, $id)
@@ -40,6 +45,11 @@ class VoteController extends Controller
         $voteRepo = $em->getRepository('AppBundle:Vote');
 
         $jokepost = $jokepostRepo->findOneById($id);
+
+        if (!$jokepost) {
+            throw $this->createNotFoundException('This jokepost does not exist');
+        }
+
         $vote = $voteRepo->findOneBy(['jokepost' => $jokepost, 'user' => $this->getUser()]);
 
         if (!$vote) {
@@ -64,8 +74,10 @@ class VoteController extends Controller
     }
 
     /**
-     *  Function that permit to unlike a JokePost
+     *  Function that permit to unlike a JokePost.
+     *
      * @param $id Id of a JokePost
+     *
      * @return Twig render
      */
     public function unlikeAction($id)
@@ -78,6 +90,11 @@ class VoteController extends Controller
         $repository = $this->getDoctrine()->getRepository('AppBundle:JokePost');
         $repositoryVote = $this->getDoctrine()->getRepository('AppBundle:Vote');
         $jokepost = $repository->findOneById($id);
+
+        if (!$jokepost) {
+            throw $this->createNotFoundException('This jokepost does not exist');
+        }
+
         $vote = $repositoryVote->findOneBy(['jokepost' => $jokepost, 'user' => $this->getUser()]);
 
         if (!$vote) {
@@ -103,11 +120,13 @@ class VoteController extends Controller
     }
 
     /**
-      * Method that like a Vote via the API
-      * @param $request
-      * @param $id
-      * @return JsonResponse
-    */
+     * Method that like a Vote via the API.
+     *
+     * @param $request
+     * @param $id
+     *
+     * @return JsonResponse
+     */
     public function likeApiAction(Request $request, $id)
     {
         $key = $this->serializer->deserialize($request->getContent(), APIKey::class, 'json');
@@ -128,6 +147,11 @@ class VoteController extends Controller
         $voteRepo = $em->getRepository('AppBundle:Vote');
 
         $jokepost = $jokepostRepo->findOneById($id);
+
+        if (!$jokepost) {
+            return new JsonResponse(['message' => 'This jokepost does not exist'], 404);
+        }
+
         $vote = $voteRepo->findOneBy(['jokepost' => $jokepost, 'user' => $user]);
 
         if (!$vote) {
@@ -147,12 +171,15 @@ class VoteController extends Controller
 
         return new JsonResponse($this->serializer->serialize($jokepost, 'json'), 200);
     }
+
     /**
-      * Method that permit to unlike a post a Vote via the API
-      * @param $request
-      * @param $id
-      * @return JsonResponse
-    */
+     * Method that permit to unlike a post a Vote via the API.
+     *
+     * @param $request
+     * @param $id
+     *
+     * @return JsonResponse
+     */
     public function unlikeApiAction(Request $request, $id)
     {
         $key = $this->serializer->deserialize($request->getContent(), APIKey::class, 'json');
@@ -172,6 +199,11 @@ class VoteController extends Controller
         $repositoryVote = $this->getDoctrine()->getRepository('AppBundle:Vote');
 
         $jokepost = $repository->findOneById($id);
+
+        if (!$jokepost) {
+            return new JsonResponse(['message' => 'This jokepost does not exist'], 404);
+        }
+
         $vote = $repositoryVote->findOneBy(['jokepost' => $jokepost, 'user' => $user]);
 
         if (!$vote) {
