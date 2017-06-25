@@ -13,8 +13,8 @@ api-signin:
     methods: [POST]
 
 api-comment:
-    path:   /api/{idJokePost}/comment
-    defaults: { _controller: AppBundle:Comment:addApi }
+    path:   /api/jokepost/comment/{id}
+    defaults: { _controller: AppBundle:Comment:newApi }
     methods: [POST]
 
 jokepost-add:
